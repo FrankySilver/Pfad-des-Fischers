@@ -672,6 +672,55 @@
             }
         }
 
+        // Zeichnen der Angler-Figur
+        function drawFisherman(x, y, isBoat) {
+            ctx.save();
+            ctx.translate(x, y);
+
+            // Stuhl / Kiste
+            ctx.fillStyle = '#3a2510';
+            ctx.fillRect(-12, 10, 24, 15);
+
+            // Beine
+            ctx.strokeStyle = '#1d2b3f';
+            ctx.lineWidth = 6;
+            ctx.beginPath();
+            ctx.moveTo(-6, 10);
+            ctx.lineTo(-6, 25);
+            ctx.moveTo(6, 10);
+            ctx.lineTo(6, 25);
+            ctx.stroke();
+
+            // Körper / Jacke (Gelbe Regenjacke)
+            ctx.fillStyle = '#ffb703';
+            ctx.beginPath();
+            ctx.roundRect(-10, -15, 20, 26, 4);
+            ctx.fill();
+
+            // Kopf
+            ctx.fillStyle = '#ffdbac';
+            ctx.beginPath();
+            ctx.arc(0, -22, 8, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Fischerhut (Grün)
+            ctx.fillStyle = '#2a9d8f';
+            ctx.beginPath();
+            ctx.ellipse(0, -26, 12, 4, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillRect(-7, -32, 14, 7);
+
+            // Arme + Hände
+            ctx.strokeStyle = '#ffb703';
+            ctx.lineWidth = 5;
+            ctx.beginPath();
+            ctx.moveTo(0, -8);
+            ctx.lineTo(12, -2);
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
         function render() {
             ctx.clearRect(0, 0, width, height);
 
@@ -740,13 +789,15 @@
 
                 // Boot Kabine / Kajüte
                 ctx.fillStyle = '#2d1b0a';
-                ctx.fillRect(boatX - 25, boatY - 25, 45, 25);
+                ctx.fillRect(boatX - 35, boatY - 25, 40, 25);
                 ctx.fillStyle = '#ffd700';
-                ctx.fillRect(boatX - 10, boatY - 18, 12, 10); // Fenster
+                ctx.fillRect(boatX - 25, boatY - 18, 12, 10); // Fenster
 
-                // Angler-Position auf dem Boot
-                rodStartX = boatX + 40;
-                rodStartY = boatY - 10;
+                // Angler-Figur auf dem Boot zeichnen
+                drawFisherman(boatX + 25, boatY - 25, true);
+
+                rodStartX = boatX + 37;
+                rodStartY = boatY - 27;
                 floatX = boatX + 180;
                 floatY = height * 0.62;
             } else {
@@ -758,11 +809,30 @@
                     ctx.fillRect(0, height * 0.65 + i, width * 0.22, 14);
                 }
 
-                rodStartX = width * 0.18;
-                rodStartY = height * 0.62;
+                // Angler-Figur auf dem Steg zeichnen
+                drawFisherman(width * 0.12, height * 0.61, false);
+
+                rodStartX = width * 0.132;
+                rodStartY = height * 0.59;
                 floatX = width * 0.55;
                 floatY = height * 0.58;
             }
+
+            // Angelrute zeichnen (Holz/Graphit Optik)
+            const rodTipX = rodStartX + 45;
+            let rodTipY = rodStartY - 35;
+
+            // Rute biegt sich beim Anbiss/Minispiel
+            if(gameStatus === 'hooking' || gameStatus === 'minigame') {
+                rodTipY += 12 + Math.sin(Date.now() / 80) * 5;
+            }
+
+            ctx.strokeStyle = '#8d5524';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(rodStartX, rodStartY);
+            ctx.lineTo(rodTipX, rodTipY);
+            ctx.stroke();
 
             // Angelleine & Haken
             if(gameStatus !== 'idle') {
@@ -772,12 +842,12 @@
                     floatY += Math.sin(Date.now() / 100) * 4;
                 }
 
-                // Schnur
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+                // Schnur von Ruten-Spitze zum Schwimmer
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
-                ctx.moveTo(rodStartX, rodStartY);
-                ctx.quadraticCurveTo((rodStartX + floatX) / 2, floatY - 20, floatX, floatY);
+                ctx.moveTo(rodTipX, rodTipY);
+                ctx.quadraticCurveTo((rodTipX + floatX) / 2, floatY - 20, floatX, floatY);
                 ctx.stroke();
 
                 // Schwimmer
