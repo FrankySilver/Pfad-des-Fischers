@@ -231,7 +231,7 @@
         #reel-zone {
             position: absolute;
             width: 100%;
-            height: 30%;
+            height: 32%;
             background: rgba(56, 239, 125, 0.4);
             border-top: 2px solid #38ef7d;
             border-bottom: 2px solid #38ef7d;
@@ -443,36 +443,46 @@
                 name: 'Idyllischer Waldsee',
                 reqLevel: 1,
                 cost: 0,
-                bgSky: ['#1a2a3a', '#2d4a68'],
-                bgWater: ['#0d233a', '#050e18'],
+                bgSky: ['#132238', '#1c3b57'],
+                bgWater: ['#10354a', '#061924'],
                 hasBoat: false,
                 unlocked: true
             },
             {
                 id: 'river',
                 name: 'Reißender Bergfluss',
-                reqLevel: 3,
-                cost: 500,
-                bgSky: ['#2c1a3a', '#5c3a68'],
-                bgWater: ['#192838', '#0a121c'],
+                reqLevel: 2,
+                cost: 200,
+                bgSky: ['#1b2838', '#384c66'],
+                bgWater: ['#1a3c54', '#0d2233'],
                 hasBoat: false,
                 unlocked: false
             },
             {
                 id: 'ocean',
-                name: 'Küstengewässer',
-                reqLevel: 6,
-                cost: 2500,
-                bgSky: ['#0d1b2a', '#1b263b'],
-                bgWater: ['#003566', '#000814'],
+                name: 'Sonnige Küstengewässer',
+                reqLevel: 5,
+                cost: 1200,
+                bgSky: ['#0f2b46', '#265b88'],
+                bgWater: ['#004e89', '#001d3d'],
+                hasBoat: false,
+                unlocked: false
+            },
+            {
+                id: 'amazonas',
+                name: 'Dichter Amazonas-Dschungel',
+                reqLevel: 8,
+                cost: 4500,
+                bgSky: ['#0d231a', '#1e4835'],
+                bgWater: ['#1a3d2f', '#091c13'],
                 hasBoat: false,
                 unlocked: false
             },
             {
                 id: 'deepocean',
                 name: 'Offener Ozean / Tiefsee',
-                reqLevel: 10,
-                cost: 7500,
+                reqLevel: 12,
+                cost: 12000,
                 bgSky: ['#020b14', '#0f2027'],
                 bgWater: ['#001220', '#000408'],
                 hasBoat: true,
@@ -482,73 +492,86 @@
 
         const RODS = [
             { id: 'bamboo', name: 'Alte Haselnuss-Rute', power: 1, cost: 0, owned: true },
-            { id: 'fiberglass', name: 'Glasfaser-Einsteiger', power: 1.3, cost: 150, owned: false },
-            { id: 'carbon', name: 'Carbon-Profi 3000', power: 1.8, cost: 500, owned: false },
-            { id: 'titanium', name: 'Titan-Raubfischrute', power: 2.4, cost: 1500, owned: false },
-            { id: 'magical', name: 'Leuchtende Runenrute', power: 3.2, cost: 4000, owned: false },
-            { id: 'neptune', name: 'Neptuns Dreizack-Rute', power: 4.5, cost: 10000, owned: false },
-            { id: 'trolling', name: 'Hochsee-Trollingrute', power: 6.0, cost: 22000, owned: false },
-            { id: 'poseidon', name: 'Poseidons Atlantis-Rute', power: 8.5, cost: 50000, owned: false }
+            { id: 'fiberglass', name: 'Glasfaser-Einsteiger', power: 1.4, cost: 80, owned: false },
+            { id: 'carbon', name: 'Carbon-Profi 3000', power: 2.0, cost: 300, owned: false },
+            { id: 'titanium', name: 'Titan-Raubfischrute', power: 2.8, cost: 900, owned: false },
+            { id: 'magical', name: 'Leuchtende Runenrute', power: 3.8, cost: 2500, owned: false },
+            { id: 'amazon_rod', name: 'Exotische Lianen-Rute', power: 4.8, cost: 6000, owned: false },
+            { id: 'amazon_titan', name: 'Amazonas-Titan-Spinnrute', power: 6.2, cost: 12000, owned: false },
+            { id: 'neptune', name: 'Neptuns Dreizack-Rute', power: 8.0, cost: 25000, owned: false },
+            { id: 'trolling', name: 'Hochsee-Trollingrute', power: 10.5, cost: 50000, owned: false },
+            { id: 'poseidon', name: 'Poseidons Atlantis-Rute', power: 14.0, cost: 100000, owned: false }
         ];
 
         const BAITS = [
             { id: 'worm', name: 'Regenwurm', attr: 'Standard', cost: 10, amount: 15, icon: '🪱' },
-            { id: 'bread', name: 'Brotkrumen', attr: 'Kleine Fische', cost: 15, amount: 20, icon: '🍞' },
-            { id: 'corn', name: 'Dosenmais', attr: 'Friedfische', cost: 25, amount: 15, icon: '🌽' },
-            { id: 'maggot', name: 'Fliegenmaden', attr: 'Schnelleres Anbeißen', cost: 40, amount: 15, icon: '🐛' },
-            { id: 'fly', name: 'Kunstfliege', attr: 'Flussfische', cost: 75, amount: 12, icon: '🪰' },
-            { id: 'shrimp', name: 'Garnele', attr: 'Meeresfische', cost: 120, amount: 10, icon: '🦐' },
-            { id: 'wobbler', name: 'Profi-Wobbler', attr: 'Raubfische', cost: 200, amount: 8, icon: '🐟' },
-            { id: 'golden', name: 'Gold-Köder', attr: 'Rare Fische', cost: 500, amount: 3, icon: '✨' },
-            { id: 'squid', name: 'Tintenfisch-Arme', attr: 'Tiefsee Raubfische', cost: 800, amount: 5, icon: '🦑' },
-            { id: 'mackerel_chunk', name: 'Makrelen-Fetzen', attr: 'Großfische & Haie', cost: 1500, amount: 4, icon: '🥩' },
-            { id: 'luminous', name: 'Tiefsee-Leuchtköder', attr: 'Legendäre Ozeanmonster', cost: 3000, amount: 2, icon: '💡' }
+            { id: 'bread', name: 'Brotkrumen', attr: 'Kleine Fische', cost: 12, amount: 20, icon: '🍞' },
+            { id: 'corn', name: 'Dosenmais', attr: 'Friedfische', cost: 20, amount: 15, icon: '🌽' },
+            { id: 'maggot', name: 'Fliegenmaden', attr: 'Schnelleres Anbeißen', cost: 30, amount: 15, icon: '🐛' },
+            { id: 'fly', name: 'Kunstfliege', attr: 'Flussfische', cost: 50, amount: 12, icon: '🪰' },
+            { id: 'shrimp', name: 'Garnele', attr: 'Meeresfische', cost: 90, amount: 10, icon: '🦐' },
+            { id: 'wobbler', name: 'Profi-Wobbler', attr: 'Raubfische', cost: 150, amount: 8, icon: '🐟' },
+            { id: 'golden', name: 'Gold-Köder', attr: 'Rare Fische', cost: 350, amount: 3, icon: '✨' },
+            { id: 'squid', name: 'Tintenfisch-Arme', attr: 'Tiefsee Raubfische', cost: 600, amount: 5, icon: '🦑' },
+            { id: 'mackerel_chunk', name: 'Makrelen-Fetzen', attr: 'Großfische & Haie', cost: 1000, amount: 4, icon: '🥩' },
+            { id: 'luminous', name: 'Tiefsee-Leuchtköder', attr: 'Legendäre Ozeanmonster', cost: 2000, amount: 2, icon: '💡' }
         ];
 
         const FISH_DATABASE = [
             // Waldsee
-            { id: 'rotfeder', name: 'Rotfeder', location: 'lake', rarity: 'common', icon: '🐟', baseSize: 15, baseValue: 5, xp: 10 },
-            { id: 'barsch', name: 'Flussbarsch', location: 'lake', rarity: 'common', icon: '🐠', baseSize: 22, baseValue: 8, xp: 15 },
-            { id: 'karausche', name: 'Karausche', location: 'lake', rarity: 'common', icon: '🐟', baseSize: 20, baseValue: 7, xp: 12 },
-            { id: 'schleie', name: 'Schleie', location: 'lake', rarity: 'uncommon', icon: '🐟', baseSize: 35, baseValue: 18, xp: 25 },
-            { id: 'brasse', name: 'Brachse', location: 'lake', rarity: 'uncommon', icon: '🐟', baseSize: 40, baseValue: 22, xp: 30 },
-            { id: 'karpfen', name: 'Schuppenkarpfen', location: 'lake', rarity: 'rare', icon: '🐡', baseSize: 55, baseValue: 45, xp: 60 },
-            { id: 'hecht', name: 'Flußhecht', location: 'lake', rarity: 'rare', icon: '🐊', baseSize: 75, baseValue: 70, xp: 90 },
-            { id: 'goldfisch', name: 'Königsgoldfisch', location: 'lake', rarity: 'legendary', icon: '🪙', baseSize: 25, baseValue: 180, xp: 200 },
+            { id: 'rotfeder', name: 'Rotfeder', location: 'lake', rarity: 'common', icon: '🐟', baseSize: 15, baseValue: 12, xp: 15 },
+            { id: 'barsch', name: 'Flussbarsch', location: 'lake', rarity: 'common', icon: '🐠', baseSize: 22, baseValue: 18, xp: 22 },
+            { id: 'karausche', name: 'Karausche', location: 'lake', rarity: 'common', icon: '🐟', baseSize: 20, baseValue: 15, xp: 18 },
+            { id: 'schleie', name: 'Schleie', location: 'lake', rarity: 'uncommon', icon: '🐟', baseSize: 35, baseValue: 35, xp: 40 },
+            { id: 'brasse', name: 'Brachse', location: 'lake', rarity: 'uncommon', icon: '🐟', baseSize: 40, baseValue: 42, xp: 48 },
+            { id: 'karpfen', name: 'Schuppenkarpfen', location: 'lake', rarity: 'rare', icon: '🐟', baseSize: 55, baseValue: 90, xp: 95 },
+            { id: 'hecht', name: 'Flußhecht', location: 'lake', rarity: 'rare', icon: '🐟', baseSize: 75, baseValue: 140, xp: 130 },
+            { id: 'goldfisch', name: 'Königsgoldfisch', location: 'lake', rarity: 'legendary', icon: '✨', baseSize: 25, baseValue: 350, xp: 300 },
 
             // Bergfluss
-            { id: 'gründling', name: 'Gründling', location: 'river', rarity: 'common', icon: '🐟', baseSize: 12, baseValue: 10, xp: 15 },
-            { id: 'elritze', name: 'Elritze', location: 'river', rarity: 'common', icon: '🐟', baseSize: 8, baseValue: 8, xp: 12 },
-            { id: 'döbel', name: 'Döbel', location: 'river', rarity: 'common', icon: '🐟', baseSize: 30, baseValue: 20, xp: 25 },
-            { id: 'bachforelle', name: 'Bachforelle', location: 'river', rarity: 'uncommon', icon: '🐟', baseSize: 35, baseValue: 35, xp: 45 },
-            { id: 'äsche', name: 'Äsche', location: 'river', rarity: 'uncommon', icon: '🐟', baseSize: 38, baseValue: 40, xp: 50 },
-            { id: 'barbe', name: 'Flußbarbe', location: 'river', rarity: 'rare', icon: '🐟', baseSize: 60, baseValue: 85, xp: 100 },
-            { id: 'lachs', name: 'Atlantik-Lachs', location: 'river', rarity: 'rare', icon: '🐟', baseSize: 85, baseValue: 130, xp: 150 },
-            { id: 'huchen', name: 'Donaulachs (Huchen)', location: 'river', rarity: 'legendary', icon: '🐉', baseSize: 110, baseValue: 350, xp: 400 },
+            { id: 'gründling', name: 'Gründling', location: 'river', rarity: 'common', icon: '🐟', baseSize: 12, baseValue: 20, xp: 22 },
+            { id: 'elritze', name: 'Elritze', location: 'river', rarity: 'common', icon: '🐟', baseSize: 8, baseValue: 16, xp: 18 },
+            { id: 'döbel', name: 'Döbel', location: 'river', rarity: 'common', icon: '🐟', baseSize: 30, baseValue: 38, xp: 35 },
+            { id: 'bachforelle', name: 'Bachforelle', location: 'river', rarity: 'uncommon', icon: '🐟', baseSize: 35, baseValue: 65, xp: 60 },
+            { id: 'äsche', name: 'Äsche', location: 'river', rarity: 'uncommon', icon: '🐟', baseSize: 38, baseValue: 75, xp: 70 },
+            { id: 'barbe', name: 'Flußbarbe', location: 'river', rarity: 'rare', icon: '🐟', baseSize: 60, baseValue: 150, xp: 140 },
+            { id: 'lachs', name: 'Atlantik-Lachs', location: 'river', rarity: 'rare', icon: '🐟', baseSize: 85, baseValue: 220, xp: 210 },
+            { id: 'huchen', name: 'Donaulachs (Huchen)', location: 'river', rarity: 'legendary', icon: '🐟', baseSize: 110, baseValue: 550, xp: 500 },
 
             // Küstengewässer
-            { id: 'hering', name: 'Atlantikhering', location: 'ocean', rarity: 'common', icon: '🐟', baseSize: 20, baseValue: 18, xp: 20 },
-            { id: 'makrele_kueste', name: 'Küstenmakrele', location: 'ocean', rarity: 'common', icon: '🐟', baseSize: 30, baseValue: 28, xp: 30 },
-            { id: 'dorsch', name: 'Kabeljau / Dorsch', location: 'ocean', rarity: 'uncommon', icon: '🐟', baseSize: 65, baseValue: 65, xp: 70 },
-            { id: 'horhecht', name: 'Hornhecht', location: 'ocean', rarity: 'uncommon', icon: '🐟', baseSize: 70, baseValue: 75, xp: 80 },
-            { id: 'scholle', name: 'Goldbutt / Scholle', location: 'ocean', rarity: 'uncommon', icon: '🐠', baseSize: 40, baseValue: 55, xp: 60 },
-            { id: 'thunfisch_kueste', name: 'Kleiner Thunfisch', location: 'ocean', rarity: 'rare', icon: '🐟', baseSize: 120, baseValue: 180, xp: 200 },
-            { id: 'riffhai', name: 'Grauer Riffhai', location: 'ocean', rarity: 'rare', icon: '🦈', baseSize: 160, baseValue: 280, xp: 300 },
-            { id: 'meerjungfrau', name: 'Magische Koralle', location: 'ocean', rarity: 'legendary', icon: '🪸', baseSize: 50, baseValue: 600, xp: 600 },
+            { id: 'hering', name: 'Atlantikhering', location: 'ocean', rarity: 'common', icon: '🐟', baseSize: 20, baseValue: 32, xp: 30 },
+            { id: 'makrele_kueste', name: 'Küstenmakrele', location: 'ocean', rarity: 'common', icon: '🐟', baseSize: 30, baseValue: 45, xp: 42 },
+            { id: 'dorsch', name: 'Kabeljau / Dorsch', location: 'ocean', rarity: 'uncommon', icon: '🐟', baseSize: 65, baseValue: 110, xp: 100 },
+            { id: 'horhecht', name: 'Hornhecht', location: 'ocean', rarity: 'uncommon', icon: '🐟', baseSize: 70, baseValue: 130, xp: 115 },
+            { id: 'scholle', name: 'Goldbutt / Scholle', location: 'ocean', rarity: 'uncommon', icon: '🐠', baseSize: 40, baseValue: 95, xp: 90 },
+            { id: 'thunfisch_kueste', name: 'Kleiner Thunfisch', location: 'ocean', rarity: 'rare', icon: '🐟', baseSize: 120, baseValue: 300, xp: 280 },
+            { id: 'riffhai', name: 'Grauer Riffhai', location: 'ocean', rarity: 'rare', icon: '🦈', baseSize: 160, baseValue: 480, xp: 420 },
+            { id: 'meerjungfrau', name: 'Magische Koralle', location: 'ocean', rarity: 'legendary', icon: '🪸', baseSize: 50, baseValue: 1100, xp: 900 },
+
+            // Dichter Amazonas-Dschungel (9 Arten)
+            { id: 'piranha', name: 'Rotbauch-Piranha', location: 'amazonas', rarity: 'common', icon: '🐟', baseSize: 22, baseValue: 55, xp: 50 },
+            { id: 'arowana', name: 'Silber-Arowana', location: 'amazonas', rarity: 'common', icon: '🐠', baseSize: 70, baseValue: 85, xp: 75 },
+            { id: 'tucunare', name: 'Pfauenbarsch (Tucunaré)', location: 'amazonas', rarity: 'uncommon', icon: '🐠', baseSize: 60, baseValue: 140, xp: 125 },
+            { id: 'pacu', name: 'Schwarzer Pacu', location: 'amazonas', rarity: 'uncommon', icon: '🐡', baseSize: 65, baseValue: 160, xp: 140 },
+            { id: 'suriubim', name: 'Suriubim-Spatelwels', location: 'amazonas', rarity: 'rare', icon: '🐟', baseSize: 110, baseValue: 320, xp: 290 },
+            { id: 'piraiba', name: 'Piraíba-Riesenwels', location: 'amazonas', rarity: 'rare', icon: '🦈', baseSize: 180, baseValue: 650, xp: 550 },
+            { id: 'pirarucu', name: 'Arapaima (Pirarucu)', location: 'amazonas', rarity: 'rare', icon: '🐊', baseSize: 220, baseValue: 850, xp: 700 },
+            { id: 'arapaima_giant', name: 'Gigantischer Arapaima', location: 'amazonas', rarity: 'legendary', icon: '🐉', baseSize: 280, baseValue: 1400, xp: 1100 },
+            { id: 'boto', name: 'Rosa Flussdelfin (Boto)', location: 'amazonas', rarity: 'legendary', icon: '🐬', baseSize: 210, baseValue: 2200, xp: 1800 },
 
             // Offener Ozean / Tiefsee (12 Arten)
-            { id: 'sardine', name: 'Ozeansardine', location: 'deepocean', rarity: 'common', icon: '🐟', baseSize: 15, baseValue: 25, xp: 30 },
-            { id: 'makrele_tiefsee', name: 'Königs-Makrele', location: 'deepocean', rarity: 'common', icon: '🐟', baseSize: 45, baseValue: 45, xp: 45 },
-            { id: 'horhecht_deep', name: 'Pfeil-Hornhecht', location: 'deepocean', rarity: 'common', icon: '🐟', baseSize: 85, baseValue: 70, xp: 70 },
-            { id: 'kabeljau_deep', name: 'Riesen-Kabeljau', location: 'deepocean', rarity: 'uncommon', icon: '🐟', baseSize: 110, baseValue: 120, xp: 110 },
-            { id: 'goldbutt_deep', name: 'Tiefsee-Plattfisch', location: 'deepocean', rarity: 'uncommon', icon: '🐠', baseSize: 60, baseValue: 110, xp: 100 },
-            { id: 'seeteufel', name: 'Atlantischer Seeteufel', location: 'deepocean', rarity: 'uncommon', icon: '🐡', baseSize: 90, baseValue: 160, xp: 150 },
-            { id: 'thunfisch_blau', name: 'Riesen-Blauflossenthun', location: 'deepocean', rarity: 'rare', icon: '🐟', baseSize: 220, baseValue: 380, xp: 350 },
-            { id: 'schwertfisch', name: 'Ozean-Schwertfisch', location: 'deepocean', rarity: 'rare', icon: '🗡️', baseSize: 260, baseValue: 500, xp: 450 },
-            { id: 'hammerhai', name: 'Bogenstirn-Hammerhai', location: 'deepocean', rarity: 'rare', icon: '🦈', baseSize: 310, baseValue: 750, xp: 600 },
-            { id: 'riesenkalmar', name: 'Leuchtender Riesenkalmar', location: 'deepocean', rarity: 'legendary', icon: '🦑', baseSize: 450, baseValue: 1500, xp: 1200 },
-            { id: 'megalodon', name: 'Uralter Megalodon', location: 'deepocean', rarity: 'legendary', icon: '🦈', baseSize: 850, baseValue: 3500, xp: 2500 },
-            { id: 'kraken_deep', name: 'Der Mythische Kraken', location: 'deepocean', rarity: 'legendary', icon: '🐙', baseSize: 1200, baseValue: 6000, xp: 4000 }
+            { id: 'sardine', name: 'Ozeansardine', location: 'deepocean', rarity: 'common', icon: '🐟', baseSize: 15, baseValue: 50, xp: 45 },
+            { id: 'makrele_tiefsee', name: 'Königs-Makrele', location: 'deepocean', rarity: 'common', icon: '🐟', baseSize: 45, baseValue: 85, xp: 75 },
+            { id: 'horhecht_deep', name: 'Pfeil-Hornhecht', location: 'deepocean', rarity: 'common', icon: '🐟', baseSize: 85, baseValue: 130, xp: 110 },
+            { id: 'kabeljau_deep', name: 'Riesen-Kabeljau', location: 'deepocean', rarity: 'uncommon', icon: '🐟', baseSize: 110, baseValue: 240, xp: 200 },
+            { id: 'goldbutt_deep', name: 'Tiefsee-Plattfisch', location: 'deepocean', rarity: 'uncommon', icon: '🐠', baseSize: 60, baseValue: 210, xp: 180 },
+            { id: 'seeteufel', name: 'Atlantischer Seeteufel', location: 'deepocean', rarity: 'uncommon', icon: '🐡', baseSize: 90, baseValue: 310, xp: 260 },
+            { id: 'thunfisch_blau', name: 'Riesen-Blauflossenthun', location: 'deepocean', rarity: 'rare', icon: '🐟', baseSize: 220, baseValue: 750, xp: 620 },
+            { id: 'schwertfisch', name: 'Ozean-Schwertfisch', location: 'deepocean', rarity: 'rare', icon: '🗡️', baseSize: 260, baseValue: 980, xp: 820 },
+            { id: 'hammerhai', name: 'Bogenstirn-Hammerhai', location: 'deepocean', rarity: 'rare', icon: '🦈', baseSize: 310, baseValue: 1450, xp: 1150 },
+            { id: 'riesenkalmar', name: 'Leuchtender Riesenkalmar', location: 'deepocean', rarity: 'legendary', icon: '🦑', baseSize: 450, baseValue: 2800, xp: 2200 },
+            { id: 'megalodon', name: 'Uralter Megalodon', location: 'deepocean', rarity: 'legendary', icon: '🦈', baseSize: 850, baseValue: 6000, xp: 4500 },
+            { id: 'kraken_deep', name: 'Der Mythische Kraken', location: 'deepocean', rarity: 'legendary', icon: '🐙', baseSize: 1200, baseValue: 12000, xp: 8500 }
         ];
 
         // --- GAME STATE ---
@@ -571,7 +594,7 @@
         // Minispiel Parameter
         let minigame = {
             zonePos: 35, // in %
-            zoneSize: 30, // in %
+            zoneSize: 32, // in %
             fishPos: 50, // in %
             fishSpeed: 0,
             progress: 30, // %
@@ -661,7 +684,7 @@
 
         function initParticles() {
             particles = [];
-            for(let i = 0; i < 25; i++) {
+            for(let i = 0; i < 30; i++) {
                 particles.push({
                     x: Math.random() * width,
                     y: Math.random() * height,
@@ -710,7 +733,7 @@
             ctx.fill();
             ctx.fillRect(-7, -32, 14, 7);
 
-            // Arme + Hände
+            // Arme
             ctx.strokeStyle = '#ffb703';
             ctx.lineWidth = 5;
             ctx.beginPath();
@@ -719,6 +742,87 @@
             ctx.stroke();
 
             ctx.restore();
+        }
+
+        // Zeichnen der detaillierten Landschafts-Elemente
+        function drawEnvironment(loc) {
+            // Bäume für Waldsee
+            if(loc.id === 'lake') {
+                ctx.fillStyle = '#0a1d13';
+                for(let i = 0; i < width; i += 60) {
+                    ctx.beginPath();
+                    ctx.moveTo(i, height * 0.5);
+                    ctx.lineTo(i + 25, height * 0.35);
+                    ctx.lineTo(i + 50, height * 0.5);
+                    ctx.fill();
+                }
+                // Schilf am Steg
+                ctx.strokeStyle = '#2d5a27';
+                ctx.lineWidth = 3;
+                for(let i = width * 0.18; i < width * 0.28; i += 8) {
+                    ctx.beginPath();
+                    ctx.moveTo(i, height * 0.65);
+                    ctx.quadraticCurveTo(i + 5, height * 0.58, i + (i % 3 === 0 ? 10 : -5), height * 0.52);
+                    ctx.stroke();
+                }
+            }
+
+            // Felsen & Wasserfall für Bergfluss
+            if(loc.id === 'river') {
+                ctx.fillStyle = '#1c2833';
+                ctx.beginPath();
+                ctx.moveTo(width * 0.7, height * 0.5);
+                ctx.lineTo(width * 0.85, height * 0.25);
+                ctx.lineTo(width, height * 0.5);
+                ctx.fill();
+
+                // Wasserfall Gischt
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+                ctx.fillRect(width * 0.82, height * 0.32, 20, height * 0.18);
+            }
+
+            // Palme für Küstengewässer
+            if(loc.id === 'ocean') {
+                ctx.fillStyle = '#e0a96d'; // Sand
+                ctx.beginPath();
+                ctx.ellipse(width * 0.85, height * 0.53, 120, 25, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Palmenstamm
+                ctx.strokeStyle = '#5c4033';
+                ctx.lineWidth = 12;
+                ctx.beginPath();
+                ctx.moveTo(width * 0.88, height * 0.52);
+                ctx.quadraticCurveTo(width * 0.85, height * 0.35, width * 0.82, height * 0.2);
+                ctx.stroke();
+
+                // Palmenblätter
+                ctx.fillStyle = '#1e5631';
+                for(let a = 0; a < Math.PI * 2; a += Math.PI / 3) {
+                    ctx.beginPath();
+                    ctx.ellipse(width * 0.82 + Math.cos(a)*30, height * 0.2 + Math.sin(a)*15, 35, 10, a, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            // Dichter Tropenwald & Lianen für den Amazonas
+            if(loc.id === 'amazonas') {
+                ctx.fillStyle = '#061a10';
+                for(let i = -20; i < width + 40; i += 45) {
+                    ctx.beginPath();
+                    ctx.arc(i, height * 0.4, 45, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                // Lianen von oben
+                ctx.strokeStyle = '#1e4835';
+                ctx.lineWidth = 4;
+                for(let i = 50; i < width; i += 120) {
+                    ctx.beginPath();
+                    ctx.moveTo(i, 0);
+                    ctx.quadraticCurveTo(i + 15, height * 0.2, i - 10, height * 0.35);
+                    ctx.stroke();
+                }
+            }
         }
 
         function render() {
@@ -733,6 +837,9 @@
             ctx.fillStyle = skyGrad;
             ctx.fillRect(0, 0, width, height * 0.5);
 
+            // Umwelt-Details zeichnen
+            drawEnvironment(loc);
+
             // Wasser
             const waterGrad = ctx.createLinearGradient(0, height * 0.5, 0, height);
             waterGrad.addColorStop(0, loc.bgWater[0]);
@@ -740,23 +847,9 @@
             ctx.fillStyle = waterGrad;
             ctx.fillRect(0, height * 0.5, width, height * 0.5);
 
-            // Horizont / Berge (nur wenn kein Boot)
-            if(!loc.hasBoat) {
-                ctx.fillStyle = 'rgba(10, 15, 25, 0.5)';
-                ctx.beginPath();
-                ctx.moveTo(0, height * 0.5);
-                ctx.lineTo(width * 0.2, height * 0.42);
-                ctx.lineTo(width * 0.45, height * 0.5);
-                ctx.lineTo(width * 0.7, height * 0.38);
-                ctx.lineTo(width, height * 0.5);
-                ctx.fill();
-            } else {
-                // Sanfte Ozean-Horizonte-Wellen
-                ctx.fillStyle = 'rgba(0, 20, 40, 0.4)';
-                ctx.beginPath();
-                ctx.arc(width * 0.5, height * 0.5 + 500, 500, Math.PI, 0);
-                ctx.fill();
-            }
+            // Horizont-Wellen / Glanz
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+            ctx.fillRect(0, height * 0.5, width, 4);
 
             // Partikel (Gischt / Sternenlicht)
             ctx.fillStyle = '#fff';
@@ -818,7 +911,7 @@
                 floatY = height * 0.58;
             }
 
-            // Angelrute zeichnen (Holz/Graphit Optik)
+            // Angelrute zeichnen
             const rodTipX = rodStartX + 45;
             let rodTipY = rodStartY - 35;
 
@@ -901,22 +994,22 @@
                 gameStatus = 'waiting';
                 playSound('cast');
 
-                // Anbiss-Timer (3-7 Sekunden)
+                // Anbiss-Timer (2-5 Sekunden)
                 waitTimer = setTimeout(() => {
                     if(gameStatus === 'waiting') {
                         gameStatus = 'hooking';
                         playSound('bite');
 
-                        // Verpassen nach 1.8 Sekunden
+                        // Verpassen nach 2.0 Sekunden
                         waitTimer = setTimeout(() => {
                             if(gameStatus === 'hooking') {
                                 gameStatus = 'idle';
                                 playSound('fail');
                                 alert('Der Fisch ist entwischt!');
                             }
-                        }, 1800);
+                        }, 2000);
                     }
-                }, 2000 + Math.random() * 4000);
+                }, 1500 + Math.random() * 3000);
 
             } else if(gameStatus === 'hooking') {
                 clearTimeout(waitTimer);
@@ -958,9 +1051,9 @@
 
             // Ziel-Zone bewegen
             if(minigame.isHolding) {
-                minigame.zonePos -= 1.8 * rodPower;
+                minigame.zonePos -= 2.0 * rodPower;
             } else {
-                minigame.zonePos += 1.4;
+                minigame.zonePos += 1.5;
             }
 
             // Grenzen für Zielzone
@@ -985,11 +1078,11 @@
             const inZone = (minigame.fishPos >= minigame.zonePos && minigame.fishPos <= minigame.zonePos + minigame.zoneSize);
 
             if(inZone) {
-                minigame.progress += 0.45 * rodPower;
-                minigame.tension = Math.max(0, minigame.tension - 0.8);
+                minigame.progress += 0.55 * rodPower;
+                minigame.tension = Math.max(0, minigame.tension - 0.9);
             } else {
-                minigame.tension += 0.6;
-                minigame.progress = Math.max(0, minigame.progress - 0.15);
+                minigame.tension += 0.5;
+                minigame.progress = Math.max(0, minigame.progress - 0.12);
             }
 
             // DOM UI Updates im Minispiel
@@ -1056,7 +1149,7 @@
 
         function addXP(amount) {
             state.xp += amount;
-            const requiredXP = state.level * 100;
+            const requiredXP = state.level * 80;
             if(state.xp >= requiredXP) {
                 state.xp -= requiredXP;
                 state.level++;
@@ -1077,7 +1170,7 @@
             // Header stats
             document.getElementById('gold-display').innerText = state.gold;
             document.getElementById('level-display').innerText = state.level;
-            document.getElementById('xp-progress').style.width = ((state.xp / (state.level * 100)) * 100) + '%';
+            document.getElementById('xp-progress').style.width = ((state.xp / (state.level * 80)) * 100) + '%';
 
             const loc = LOCATIONS.find(l => l.id === state.currentLocation);
             document.getElementById('location-display').innerText = loc.name;
