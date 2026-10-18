@@ -82,7 +82,7 @@
         #game-container {
             position: relative;
             flex: 1;
-            display: none; /* Erst nach Login sichtbar */
+            display: none;
             flex-direction: column;
             background-color: #1a2536;
         }
@@ -131,14 +131,35 @@
             display: block;
             width: 100%;
             height: 100%;
+            cursor: crosshair;
+        }
+
+        /* Auswurf-Button am Angler */
+        #cast-action-btn {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: #000;
+            font-weight: bold;
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: none;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(56, 239, 125, 0.4);
+            z-index: 15;
+            font-size: 14px;
+            transition: transform 0.1s;
+        }
+        #cast-action-btn:hover {
+            transform: scale(1.05);
         }
 
         #sidebar {
             width: 400px;
             background-color: #162131;
             border-left: 2px solid #23344d;
-            display: none; /* Erst nach Login sichtbar */
+            display: none;
             flex-direction: column;
             z-index: 20;
             box-shadow: -5px 0 20px rgba(0,0,0,0.4);
@@ -248,7 +269,7 @@
             color: #fff;
         }
 
-        /* Minispiel Overlay */
+        /* Minispiel Overlay (Schwierigkeit 6/10) */
         #minigame-overlay {
             position: absolute;
             top: 50%;
@@ -290,7 +311,7 @@
         #reel-zone {
             position: absolute;
             width: 100%;
-            height: 32%;
+            height: 25%;
             background: rgba(56, 239, 125, 0.4);
             border-top: 2px solid #38ef7d;
             border-bottom: 2px solid #38ef7d;
@@ -387,7 +408,6 @@
             cursor: not-allowed;
         }
 
-        /* Rangliste & Audio Tabs Styles */
         .ranking-subtabs {
             display: flex;
             gap: 6px;
@@ -441,9 +461,9 @@
     <div id="main-menu">
         <div class="menu-box">
             <h1>🎣 Pfad des Fischers</h1>
-            <p>Trage deinen Namen ein, um deine Karriere zu beginnen und dich in den Ranglisten zu verewigen!</p>
+            <p>Trage deinen Namen ein, um deine Karriere zu beginnen!</p>
             <input type="text" id="player-name-input" class="menu-input" placeholder="Dein Anglername..." maxlength="16">
-            <button class="btn" style="width: 100%; padding: 12px; font-size: 14px;" onclick="startGameSession()">Ab an den Wasser! 🌊</button>
+            <button class="btn" style="width: 100%; padding: 12px; font-size: 14px;" onclick="startGameSession()">Ab an das Wasser! 🌊</button>
         </div>
     </div>
 
@@ -474,12 +494,13 @@
 
         <div id="canvas-wrapper">
             <canvas id="gameCanvas"></canvas>
+            <button id="cast-action-btn" onclick="triggerCastButton()">🎣 Auswerfen</button>
         </div>
 
         <!-- Minispiel Overlay -->
         <div id="minigame-overlay">
             <div id="minigame-title">Fisch am Haken!</div>
-            <div style="font-size: 11px; color: #8a9ba8; margin-bottom: 8px;">Klicken/Gedrückt halten = Anheben</div>
+            <div style="font-size: 11px; color: #8a9ba8; margin-bottom: 8px;">Gedrückt halten = Anheben</div>
             
             <div class="reel-track">
                 <div id="reel-zone"></div>
@@ -502,7 +523,7 @@
             <h2 id="catch-title">Toller Fang!</h2>
             <div id="catch-icon" class="fish-icon">🐟</div>
             <div id="catch-name" style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">Flussbarsch</div>
-            <div id="catch-details" style="font-size: 12px; color: #8a9ba8; margin-bottom: 15px;">Größe: 24 cm | Wert: 15 Gold</div>
+            <div id="catch-details" style="font-size: 12px; color: #8a9ba8; margin-bottom: 15px;">Größe: 24 cm | Wert: 5 Gold</div>
             <button class="btn" onclick="closeCatchModal()">Einholen & Weiterangeln</button>
         </div>
     </div>
@@ -518,7 +539,6 @@
             <button class="tab-btn" onclick="switchTab('settings')">⚙️ Audio</button>
         </div>
 
-        <!-- SHOP TAB -->
         <div id="tab-shop" class="tab-content active">
             <h3 style="margin-bottom: 12px; font-size: 14px; color: #38ef7d;">ANGELRUTEN</h3>
             <div id="rods-shop-list"></div>
@@ -527,7 +547,6 @@
             <div id="baits-shop-list"></div>
         </div>
 
-        <!-- AUSRÜSTUNG TAB -->
         <div id="tab-gear" class="tab-content">
             <h3 style="margin-bottom: 12px; font-size: 14px; color: #38ef7d;">AUSGEWÄHLTE RUTE</h3>
             <div id="rods-inventory-list"></div>
@@ -536,19 +555,16 @@
             <div id="baits-inventory-list"></div>
         </div>
 
-        <!-- FANGBUCH TAB -->
         <div id="tab-logbook" class="tab-content">
             <h3 style="margin-bottom: 12px; font-size: 14px; color: #38ef7d;">ENTDECKTE FISCHE</h3>
             <div id="logbook-list"></div>
         </div>
 
-        <!-- GEWÄSSER TAB -->
         <div id="tab-locations" class="tab-content">
             <h3 style="margin-bottom: 12px; font-size: 14px; color: #38ef7d;">REISEZIELE</h3>
             <div id="locations-list"></div>
         </div>
 
-        <!-- RANGLISTE TAB -->
         <div id="tab-rankings" class="tab-content">
             <h3 style="margin-bottom: 10px; font-size: 14px; color: #38ef7d;">HALL OF FAME</h3>
             <div class="ranking-subtabs">
@@ -558,16 +574,12 @@
             <div id="ranking-content-area"></div>
         </div>
 
-        <!-- AUDIO EINSTELLUNGEN TAB -->
         <div id="tab-settings" class="tab-content">
             <h3 style="margin-bottom: 14px; font-size: 14px; color: #38ef7d;">AUDIO & MUSIK</h3>
-            
             <div class="slider-container">
                 <label><span>🎵 Hintergrundmusik</span><span id="music-vol-val">50%</span></label>
                 <input type="range" id="music-slider" min="0" max="100" value="50" oninput="updateMusicVolume(this.value)">
-                <div style="font-size: 10px; color: #6d8299; margin-top: 6px;">Stream: Chill Lofi Beats</div>
             </div>
-
             <div class="slider-container">
                 <label><span>🔊 Soundeffekte (SFX)</span><span id="sfx-vol-val">70%</span></label>
                 <input type="range" id="sfx-slider" min="0" max="100" value="70" oninput="updateSfxVolume(this.value)">
@@ -575,107 +587,100 @@
         </div>
     </div>
 
-    <!-- YouTube Musik Audio Stream (Gewünschtes Lied ID: 1_rif8rQRKw) -->
+    <!-- YouTube Musik Audio Stream -->
     <iframe id="youtube-audio" width="0" height="0" src="https://www.youtube.com/embed/1_rif8rQRKw?enablejsapi=1&autoplay=1&loop=1&playlist=1_rif8rQRKw" frameborder="0" allow="autoplay"></iframe>
 
     <script>
-        // --- GLOBALE SPIEL-DATEN ---
         const LOCATIONS = [
             { id: 'lake', name: 'Idyllischer Waldsee', reqLevel: 1, cost: 0, bgSky: ['#87CEEB', '#E0F6FF'], bgWater: ['#2E8B57', '#1E4D2B'], hasBoat: false, unlocked: true },
-            { id: 'river', name: 'Reißender Bergfluss', reqLevel: 2, cost: 200, bgSky: ['#7092BE', '#C8D7E6'], bgWater: ['#3A6073', '#16222A'], hasBoat: false, unlocked: false },
-            { id: 'ocean', name: 'Sonnige Küstengewässer', reqLevel: 5, cost: 1200, bgSky: ['#4A90E2', '#B2E0F7'], bgWater: ['#0077BE', '#004080'], hasBoat: false, unlocked: false },
-            { id: 'amazonas', name: 'Dichter Amazonas-Dschungel', reqLevel: 8, cost: 4500, bgSky: ['#556B2F', '#A2B964'], bgWater: ['#2F5233', '#112211'], hasBoat: false, unlocked: false },
-            { id: 'deepocean', name: 'Offener Ozean / Tiefsee', reqLevel: 12, cost: 12000, bgSky: ['#FD5E53', '#FFC3A0'], bgWater: ['#0A2342', '#030F26'], hasBoat: true, unlocked: false }
+            { id: 'river', name: 'Reißender Bergfluss', reqLevel: 2, cost: 400, bgSky: ['#7092BE', '#C8D7E6'], bgWater: ['#3A6073', '#16222A'], hasBoat: false, unlocked: false },
+            { id: 'ocean', name: 'Sonnige Küstengewässer', reqLevel: 5, cost: 2500, bgSky: ['#4A90E2', '#B2E0F7'], bgWater: ['#0077BE', '#004080'], hasBoat: false, unlocked: false },
+            { id: 'amazonas', name: 'Dichter Amazonas-Dschungel', reqLevel: 8, cost: 8000, bgSky: ['#556B2F', '#A2B964'], bgWater: ['#2F5233', '#112211'], hasBoat: false, unlocked: false },
+            { id: 'deepocean', name: 'Offener Ozean / Tiefsee', reqLevel: 12, cost: 20000, bgSky: ['#FD5E53', '#FFC3A0'], bgWater: ['#0A2342', '#030F26'], hasBoat: true, unlocked: false }
         ];
 
         const RODS = [
             { id: 'bamboo', name: 'Alte Haselnuss-Rute', power: 1, cost: 0, owned: true },
-            { id: 'fiberglass', name: 'Glasfaser-Einsteiger', power: 1.3, cost: 80, owned: false },
-            { id: 'carbon', name: 'Carbon-Profi 3000', power: 1.8, cost: 300, owned: false },
-            { id: 'titanium', name: 'Titan-Raubfischrute', power: 2.4, cost: 900, owned: false },
-            { id: 'magical', name: 'Leuchtende Runenrute', power: 3.2, cost: 2500, owned: false },
-            { id: 'amazon_rod', name: 'Exotische Lianen-Rute', power: 4.2, cost: 6000, owned: false },
-            { id: 'amazon_titan', name: 'Amazonas-Titan-Spinnrute', power: 5.5, cost: 12000, owned: false },
-            { id: 'neptune', name: 'Neptuns Dreizack-Rute', power: 7.0, cost: 25000, owned: false },
-            { id: 'trolling', name: 'Hochsee-Trollingrute', power: 9.0, cost: 50000, owned: false },
-            { id: 'poseidon', name: 'Poseidons Atlantis-Rute', power: 12.0, cost: 100000, owned: false }
+            { id: 'fiberglass', name: 'Glasfaser-Einsteiger', power: 1.3, cost: 150, owned: false },
+            { id: 'carbon', name: 'Carbon-Profi 3000', power: 1.8, cost: 600, owned: false },
+            { id: 'titanium', name: 'Titan-Raubfischrute', power: 2.4, cost: 1800, owned: false },
+            { id: 'magical', name: 'Leuchtende Runenrute', power: 3.2, cost: 5000, owned: false },
+            { id: 'amazon_rod', name: 'Exotische Lianen-Rute', power: 4.2, cost: 12000, owned: false },
+            { id: 'amazon_titan', name: 'Amazonas-Titan-Spinnrute', power: 5.5, cost: 24000, owned: false },
+            { id: 'neptune', name: 'Neptuns Dreizack-Rute', power: 7.0, cost: 50000, owned: false },
+            { id: 'trolling', name: 'Hochsee-Trollingrute', power: 9.0, cost: 95000, owned: false },
+            { id: 'poseidon', name: 'Poseidons Atlantis-Rute', power: 12.0, cost: 180000, owned: false }
         ];
 
         const BAITS = [
-            { id: 'worm', name: 'Regenwurm', attr: 'Standard', cost: 10, amount: 15, icon: '🪱' },
-            { id: 'bread', name: 'Brotkrumen', attr: 'Kleine Fische', cost: 12, amount: 20, icon: '🍞' },
-            { id: 'corn', name: 'Dosenmais', attr: 'Friedfische', cost: 20, amount: 15, icon: '🌽' },
-            { id: 'maggot', name: 'Fliegenmaden', attr: 'Schnelles Anbeißen', cost: 30, amount: 15, icon: '🐛' },
-            { id: 'fly', name: 'Kunstfliege', attr: 'Flussfische', cost: 50, amount: 12, icon: '🪰' },
-            { id: 'shrimp', name: 'Garnele', attr: 'Meeresfische', cost: 90, amount: 10, icon: '🦐' },
-            { id: 'wobbler', name: 'Profi-Wobbler', attr: 'Raubfische', cost: 150, amount: 8, icon: '🐟' },
-            { id: 'golden', name: 'Gold-Köder', attr: 'Rare Fische', cost: 350, amount: 3, icon: '✨' },
-            { id: 'squid', name: 'Tintenfisch-Arme', attr: 'Tiefsee Raubfische', cost: 600, amount: 5, icon: '🦑' },
-            { id: 'mackerel_chunk', name: 'Makrelen-Fetzen', attr: 'Großfische & Haie', cost: 1000, amount: 4, icon: '🥩' },
-            { id: 'luminous', name: 'Tiefsee-Leuchtköder', attr: 'Legendäre Monster', cost: 2000, amount: 2, icon: '💡' }
+            { id: 'worm', name: 'Regenwurm', attr: 'Standard', cost: 5, amount: 15, icon: '🪱' },
+            { id: 'bread', name: 'Brotkrumen', attr: 'Kleine Fische', cost: 8, amount: 20, icon: '🍞' },
+            { id: 'corn', name: 'Dosenmais', attr: 'Friedfische', cost: 12, amount: 15, icon: '🌽' },
+            { id: 'maggot', name: 'Fliegenmaden', attr: 'Schnelles Anbeißen', cost: 18, amount: 15, icon: '🐛' },
+            { id: 'fly', name: 'Kunstfliege', attr: 'Flussfische', cost: 30, amount: 12, icon: '🪰' },
+            { id: 'shrimp', name: 'Garnele', attr: 'Meeresfische', cost: 50, amount: 10, icon: '🦐' },
+            { id: 'wobbler', name: 'Profi-Wobbler', attr: 'Raubfische', cost: 90, amount: 8, icon: '🐟' },
+            { id: 'golden', name: 'Gold-Köder', attr: 'Rare Fische', cost: 200, amount: 3, icon: '✨' },
+            { id: 'squid', name: 'Tintenfisch-Arme', attr: 'Tiefsee Raubfische', cost: 350, amount: 5, icon: '🦑' },
+            { id: 'mackerel_chunk', name: 'Makrelen-Fetzen', attr: 'Großfische & Haie', cost: 600, amount: 4, icon: '🥩' },
+            { id: 'luminous', name: 'Tiefsee-Leuchtköder', attr: 'Legendäre Monster', cost: 1200, amount: 2, icon: '💡' }
         ];
 
         const FISH_DATABASE = [
-            // Waldsee
-            { id: 'rotfeder', name: 'Rotfeder', location: 'lake', rarity: 'common', icon: '🐟', baseSize: 15, baseValue: 12, xp: 15, minRodPower: 1 },
-            { id: 'barsch', name: 'Flussbarsch', location: 'lake', rarity: 'common', icon: '🐠', baseSize: 22, baseValue: 18, xp: 22, minRodPower: 1 },
-            { id: 'karausche', name: 'Karausche', location: 'lake', rarity: 'common', icon: '🐟', baseSize: 20, baseValue: 15, xp: 18, minRodPower: 1 },
-            { id: 'schleie', name: 'Schleie', location: 'lake', rarity: 'uncommon', icon: '🐟', baseSize: 35, baseValue: 35, xp: 40, minRodPower: 1 },
-            { id: 'brasse', name: 'Brachse', location: 'lake', rarity: 'uncommon', icon: '🐟', baseSize: 40, baseValue: 42, xp: 48, minRodPower: 1 },
-            { id: 'karpfen', name: 'Schuppenkarpfen', location: 'lake', rarity: 'rare', icon: '🐟', baseSize: 55, baseValue: 90, xp: 95, minRodPower: 1.4 },
-            { id: 'hecht', name: 'Flußhecht', location: 'lake', rarity: 'rare', icon: '🐟', baseSize: 75, baseValue: 140, xp: 130, minRodPower: 1.8 },
-            { id: 'goldfisch', name: 'Königsgoldfisch', location: 'lake', rarity: 'legendary', icon: '✨', baseSize: 25, baseValue: 350, xp: 300, minRodPower: 2.4 },
+            { id: 'rotfeder', name: 'Rotfeder', location: 'lake', rarity: 'common', icon: '🐟', baseSize: 15, baseValue: 4, xp: 5, minRodPower: 1 },
+            { id: 'barsch', name: 'Flussbarsch', location: 'lake', rarity: 'common', icon: '🐠', baseSize: 22, baseValue: 6, xp: 8, minRodPower: 1 },
+            { id: 'karausche', name: 'Karausche', location: 'lake', rarity: 'common', icon: '🐟', baseSize: 20, baseValue: 5, xp: 6, minRodPower: 1 },
+            { id: 'schleie', name: 'Schleie', location: 'lake', rarity: 'uncommon', icon: '🐟', baseSize: 35, baseValue: 12, xp: 15, minRodPower: 1 },
+            { id: 'brasse', name: 'Brachse', location: 'lake', rarity: 'uncommon', icon: '🐟', baseSize: 40, baseValue: 15, xp: 18, minRodPower: 1 },
+            { id: 'karpfen', name: 'Schuppenkarpfen', location: 'lake', rarity: 'rare', icon: '🐟', baseSize: 55, baseValue: 32, xp: 35, minRodPower: 1.3 },
+            { id: 'hecht', name: 'Flußhecht', location: 'lake', rarity: 'rare', icon: '🐟', baseSize: 75, baseValue: 50, xp: 50, minRodPower: 1.8 },
+            { id: 'goldfisch', name: 'Königsgoldfisch', location: 'lake', rarity: 'legendary', icon: '✨', baseSize: 25, baseValue: 120, xp: 120, minRodPower: 2.4 },
 
-            // Bergfluss
-            { id: 'gründling', name: 'Gründling', location: 'river', rarity: 'common', icon: '🐟', baseSize: 12, baseValue: 20, xp: 22, minRodPower: 1 },
-            { id: 'elritze', name: 'Elritze', location: 'river', rarity: 'common', icon: '🐟', baseSize: 8, baseValue: 16, xp: 18, minRodPower: 1 },
-            { id: 'döbel', name: 'Döbel', location: 'river', rarity: 'common', icon: '🐟', baseSize: 30, baseValue: 38, xp: 35, minRodPower: 1 },
-            { id: 'bachforelle', name: 'Bachforelle', location: 'river', rarity: 'uncommon', icon: '🐟', baseSize: 35, baseValue: 65, xp: 60, minRodPower: 1.3 },
-            { id: 'äsche', name: 'Äsche', location: 'river', rarity: 'uncommon', icon: '🐟', baseSize: 38, baseValue: 75, xp: 70, minRodPower: 1.3 },
-            { id: 'barbe', name: 'Flußbarbe', location: 'river', rarity: 'rare', icon: '🐟', baseSize: 60, baseValue: 150, xp: 140, minRodPower: 1.8 },
-            { id: 'lachs', name: 'Atlantik-Lachs', location: 'river', rarity: 'rare', icon: '🐟', baseSize: 85, baseValue: 220, xp: 210, minRodPower: 2.4 },
-            { id: 'huchen', name: 'Donaulachs (Huchen)', location: 'river', rarity: 'legendary', icon: '🐟', baseSize: 110, baseValue: 550, xp: 500, minRodPower: 3.2 },
+            { id: 'gründling', name: 'Gründling', location: 'river', rarity: 'common', icon: '🐟', baseSize: 12, baseValue: 7, xp: 8, minRodPower: 1 },
+            { id: 'elritze', name: 'Elritze', location: 'river', rarity: 'common', icon: '🐟', baseSize: 8, baseValue: 6, xp: 7, minRodPower: 1 },
+            { id: 'döbel', name: 'Döbel', location: 'river', rarity: 'common', icon: '🐟', baseSize: 30, baseValue: 13, xp: 14, minRodPower: 1 },
+            { id: 'bachforelle', name: 'Bachforelle', location: 'river', rarity: 'uncommon', icon: '🐟', baseSize: 35, baseValue: 22, xp: 25, minRodPower: 1.3 },
+            { id: 'äsche', name: 'Äsche', location: 'river', rarity: 'uncommon', icon: '🐟', baseSize: 38, baseValue: 26, xp: 28, minRodPower: 1.3 },
+            { id: 'barbe', name: 'Flußbarbe', location: 'river', rarity: 'rare', icon: '🐟', baseSize: 60, baseValue: 55, xp: 60, minRodPower: 1.8 },
+            { id: 'lachs', name: 'Atlantik-Lachs', location: 'river', rarity: 'rare', icon: '🐟', baseSize: 85, baseValue: 80, xp: 85, minRodPower: 2.4 },
+            { id: 'huchen', name: 'Donaulachs (Huchen)', location: 'river', rarity: 'legendary', icon: '🐟', baseSize: 110, baseValue: 200, xp: 200, minRodPower: 3.2 },
 
-            // Küstengewässer
-            { id: 'hering', name: 'Atlantikhering', location: 'ocean', rarity: 'common', icon: '🐟', baseSize: 20, baseValue: 32, xp: 30, minRodPower: 1.3 },
-            { id: 'makrele_kueste', name: 'Küstenmakrele', location: 'ocean', rarity: 'common', icon: '🐟', baseSize: 30, baseValue: 45, xp: 42, minRodPower: 1.3 },
-            { id: 'dorsch', name: 'Kabeljau / Dorsch', location: 'ocean', rarity: 'uncommon', icon: '🐟', baseSize: 65, baseValue: 110, xp: 100, minRodPower: 1.8 },
-            { id: 'horhecht', name: 'Hornhecht', location: 'ocean', rarity: 'uncommon', icon: '🐟', baseSize: 70, baseValue: 130, xp: 115, minRodPower: 1.8 },
-            { id: 'scholle', name: 'Goldbutt / Scholle', location: 'ocean', rarity: 'uncommon', icon: '🐠', baseSize: 40, baseValue: 95, xp: 90, minRodPower: 1.8 },
-            { id: 'thunfisch_kueste', name: 'Kleiner Thunfisch', location: 'ocean', rarity: 'rare', icon: '🐟', baseSize: 120, baseValue: 300, xp: 280, minRodPower: 2.4 },
-            { id: 'riffhai', name: 'Grauer Riffhai', location: 'ocean', rarity: 'rare', icon: '🦈', baseSize: 160, baseValue: 480, xp: 420, minRodPower: 3.2 },
-            { id: 'meerjungfrau', name: 'Magische Koralle', location: 'ocean', rarity: 'legendary', icon: '🪸', baseSize: 50, baseValue: 1100, xp: 900, minRodPower: 4.2 },
+            { id: 'hering', name: 'Atlantikhering', location: 'ocean', rarity: 'common', icon: '🐟', baseSize: 20, baseValue: 11, xp: 12, minRodPower: 1.3 },
+            { id: 'makrele_kueste', name: 'Küstenmakrele', location: 'ocean', rarity: 'common', icon: '🐟', baseSize: 30, baseValue: 16, xp: 17, minRodPower: 1.3 },
+            { id: 'dorsch', name: 'Kabeljau / Dorsch', location: 'ocean', rarity: 'uncommon', icon: '🐟', baseSize: 65, baseValue: 40, xp: 42, minRodPower: 1.8 },
+            { id: 'horhecht', name: 'Hornhecht', location: 'ocean', rarity: 'uncommon', icon: '🐟', baseSize: 70, baseValue: 48, xp: 50, minRodPower: 1.8 },
+            { id: 'scholle', name: 'Goldbutt / Scholle', location: 'ocean', rarity: 'uncommon', icon: '🐠', baseSize: 40, baseValue: 35, xp: 38, minRodPower: 1.8 },
+            { id: 'thunfisch_kueste', name: 'Kleiner Thunfisch', location: 'ocean', rarity: 'rare', icon: '🐟', baseSize: 120, baseValue: 110, xp: 110, minRodPower: 2.4 },
+            { id: 'riffhai', name: 'Grauer Riffhai', location: 'ocean', rarity: 'rare', icon: '🦈', baseSize: 160, baseValue: 170, xp: 160, minRodPower: 3.2 },
+            { id: 'meerjungfrau', name: 'Magische Koralle', location: 'ocean', rarity: 'legendary', icon: '🪸', baseSize: 50, baseValue: 400, xp: 350, minRodPower: 4.2 },
 
-            // Dichter Amazonas-Dschungel (Hier fordern Arapaima & Boto gute Ruten!)
-            { id: 'piranha', name: 'Rotbauch-Piranha', location: 'amazonas', rarity: 'common', icon: '🐟', baseSize: 22, baseValue: 55, xp: 50, minRodPower: 2.4 },
-            { id: 'arowana', name: 'Silber-Arowana', location: 'amazonas', rarity: 'common', icon: '🐠', baseSize: 70, baseValue: 85, xp: 75, minRodPower: 2.4 },
-            { id: 'tucunare', name: 'Pfauenbarsch (Tucunaré)', location: 'amazonas', rarity: 'uncommon', icon: '🐠', baseSize: 60, baseValue: 140, xp: 125, minRodPower: 3.2 },
-            { id: 'pacu', name: 'Schwarzer Pacu', location: 'amazonas', rarity: 'uncommon', icon: '🐡', baseSize: 65, baseValue: 160, xp: 140, minRodPower: 3.2 },
-            { id: 'suriubim', name: 'Suriubim-Spatelwels', location: 'amazonas', rarity: 'rare', icon: '🐟', baseSize: 110, baseValue: 320, xp: 290, minRodPower: 4.2 },
-            { id: 'piraiba', name: 'Piraíba-Riesenwels', location: 'amazonas', rarity: 'rare', icon: '🦈', baseSize: 180, baseValue: 650, xp: 550, minRodPower: 5.5 },
-            { id: 'pirarucu', name: 'Arapaima (Pirarucu)', location: 'amazonas', rarity: 'rare', icon: '🐊', baseSize: 220, baseValue: 850, xp: 700, minRodPower: 5.5 },
-            { id: 'arapaima_giant', name: 'Gigantischer Arapaima', location: 'amazonas', rarity: 'legendary', icon: '🐉', baseSize: 280, baseValue: 1400, xp: 1100, minRodPower: 7.0 },
-            { id: 'boto', name: 'Rosa Flussdelfin (Boto)', location: 'amazonas', rarity: 'legendary', icon: '🐬', baseSize: 210, baseValue: 2200, xp: 1800, minRodPower: 9.0 },
+            { id: 'piranha', name: 'Rotbauch-Piranha', location: 'amazonas', rarity: 'common', icon: '🐟', baseSize: 22, baseValue: 20, xp: 22, minRodPower: 2.4 },
+            { id: 'arowana', name: 'Silber-Arowana', location: 'amazonas', rarity: 'common', icon: '🐠', baseSize: 70, baseValue: 30, xp: 32, minRodPower: 2.4 },
+            { id: 'tucunare', name: 'Pfauenbarsch (Tucunaré)', location: 'amazonas', rarity: 'uncommon', icon: '🐠', baseSize: 60, baseValue: 50, xp: 52, minRodPower: 3.2 },
+            { id: 'pacu', name: 'Schwarzer Pacu', location: 'amazonas', rarity: 'uncommon', icon: '🐡', baseSize: 65, baseValue: 60, xp: 60, minRodPower: 3.2 },
+            { id: 'suriubim', name: 'Suriubim-Spatelwels', location: 'amazonas', rarity: 'rare', icon: '🐟', baseSize: 110, baseValue: 120, xp: 120, minRodPower: 4.2 },
+            { id: 'piraiba', name: 'Piraíba-Riesenwels', location: 'amazonas', rarity: 'rare', icon: '🦈', baseSize: 180, baseValue: 240, xp: 220, minRodPower: 5.5 },
+            { id: 'pirarucu', name: 'Arapaima (Pirarucu)', location: 'amazonas', rarity: 'rare', icon: '🐊', baseSize: 220, baseValue: 320, xp: 280, minRodPower: 5.5 },
+            { id: 'arapaima_giant', name: 'Gigantischer Arapaima', location: 'amazonas', rarity: 'legendary', icon: '🐉', baseSize: 280, baseValue: 550, xp: 450, minRodPower: 7.0 },
+            { id: 'boto', name: 'Rosa Flussdelfin (Boto)', location: 'amazonas', rarity: 'legendary', icon: '🐬', baseSize: 210, baseValue: 800, xp: 700, minRodPower: 9.0 },
 
-            // Offener Ozean / Tiefsee
-            { id: 'sardine', name: 'Ozeansardine', location: 'deepocean', rarity: 'common', icon: '🐟', baseSize: 15, baseValue: 50, xp: 45, minRodPower: 4.2 },
-            { id: 'makrele_tiefsee', name: 'Königs-Makrele', location: 'deepocean', rarity: 'common', icon: '🐟', baseSize: 45, baseValue: 85, xp: 75, minRodPower: 4.2 },
-            { id: 'horhecht_deep', name: 'Pfeil-Hornhecht', location: 'deepocean', rarity: 'common', icon: '🐟', baseSize: 85, baseValue: 130, xp: 110, minRodPower: 4.2 },
-            { id: 'kabeljau_deep', name: 'Riesen-Kabeljau', location: 'deepocean', rarity: 'uncommon', icon: '🐟', baseSize: 110, baseValue: 240, xp: 200, minRodPower: 5.5 },
-            { id: 'goldbutt_deep', name: 'Tiefsee-Plattfisch', location: 'deepocean', rarity: 'uncommon', icon: '🐠', baseSize: 60, baseValue: 210, xp: 180, minRodPower: 5.5 },
-            { id: 'seeteufel', name: 'Atlantischer Seeteufel', location: 'deepocean', rarity: 'uncommon', icon: '🐡', baseSize: 90, baseValue: 310, xp: 260, minRodPower: 5.5 },
-            { id: 'thunfisch_blau', name: 'Riesen-Blauflossenthun', location: 'deepocean', rarity: 'rare', icon: '🐟', baseSize: 220, baseValue: 750, xp: 620, minRodPower: 7.0 },
-            { id: 'schwertfisch', name: 'Ozean-Schwertfisch', location: 'deepocean', rarity: 'rare', icon: '🗡️', baseSize: 260, baseValue: 980, xp: 820, minRodPower: 7.0 },
-            { id: 'hammerhai', name: 'Bogenstirn-Hammerhai', location: 'deepocean', rarity: 'rare', icon: '🦈', baseSize: 310, baseValue: 1450, xp: 1150, minRodPower: 9.0 },
-            { id: 'riesenkalmar', name: 'Leuchtender Riesenkalmar', location: 'deepocean', rarity: 'legendary', icon: '🦑', baseSize: 450, baseValue: 2800, xp: 2200, minRodPower: 12.0 },
-            { id: 'megalodon', name: 'Uralter Megalodon', location: 'deepocean', rarity: 'legendary', icon: '🦈', baseSize: 850, baseValue: 6000, xp: 4500, minRodPower: 12.0 },
-            { id: 'kraken_deep', name: 'Der Mythische Kraken', location: 'deepocean', rarity: 'legendary', icon: '🐙', baseSize: 1200, baseValue: 12000, xp: 8500, minRodPower: 12.0 }
+            { id: 'sardine', name: 'Ozeansardine', location: 'deepocean', rarity: 'common', icon: '🐟', baseSize: 15, baseValue: 18, xp: 20, minRodPower: 4.2 },
+            { id: 'makrele_tiefsee', name: 'Königs-Makrele', location: 'deepocean', rarity: 'common', icon: '🐟', baseSize: 45, baseValue: 32, xp: 35, minRodPower: 4.2 },
+            { id: 'horhecht_deep', name: 'Pfeil-Hornhecht', location: 'deepocean', rarity: 'common', icon: '🐟', baseSize: 85, baseValue: 50, xp: 50, minRodPower: 4.2 },
+            { id: 'kabeljau_deep', name: 'Riesen-Kabeljau', location: 'deepocean', rarity: 'uncommon', icon: '🐟', baseSize: 110, baseValue: 90, xp: 90, minRodPower: 5.5 },
+            { id: 'goldbutt_deep', name: 'Tiefsee-Plattfisch', location: 'deepocean', rarity: 'uncommon', icon: '🐠', baseSize: 60, baseValue: 80, xp: 80, minRodPower: 5.5 },
+            { id: 'seeteufel', name: 'Atlantischer Seeteufel', location: 'deepocean', rarity: 'uncommon', icon: '🐡', baseSize: 90, baseValue: 120, xp: 110, minRodPower: 5.5 },
+            { id: 'thunfisch_blau', name: 'Riesen-Blauflossenthun', location: 'deepocean', rarity: 'rare', icon: '🐟', baseSize: 220, baseValue: 280, xp: 260, minRodPower: 7.0 },
+            { id: 'schwertfisch', name: 'Ozean-Schwertfisch', location: 'deepocean', rarity: 'rare', icon: '🗡️', baseSize: 260, baseValue: 360, xp: 330, minRodPower: 7.0 },
+            { id: 'hammerhai', name: 'Bogenstirn-Hammerhai', location: 'deepocean', rarity: 'rare', icon: '🦈', baseSize: 310, baseValue: 550, xp: 480, minRodPower: 9.0 },
+            { id: 'riesenkalmar', name: 'Leuchtender Riesenkalmar', location: 'deepocean', rarity: 'legendary', icon: '🦑', baseSize: 450, baseValue: 1100, xp: 900, minRodPower: 12.0 },
+            { id: 'megalodon', name: 'Uralter Megalodon', location: 'deepocean', rarity: 'legendary', icon: '🦈', baseSize: 850, baseValue: 2400, xp: 1800, minRodPower: 12.0 },
+            { id: 'kraken_deep', name: 'Der Mythische Kraken', location: 'deepocean', rarity: 'legendary', icon: '🐙', baseSize: 1200, baseValue: 5000, xp: 3500, minRodPower: 12.0 }
         ];
 
-        // --- SPIELER & SPIELSTAND STATE ---
         let playerName = '';
         let state = {
-            gold: 50,
+            gold: 30,
             level: 1,
             xp: 0,
             currentLocation: 'lake',
@@ -686,20 +691,24 @@
             totalFishCaught: 0
         };
 
-        // Ranglisten-Datenstruktur (wird in localStorage gesichert)
         let rankingsData = {
-            totalCatches: [], // [{ name, count }]
-            fishRecords: {}   // fishId: [{ name, size }] max 5
+            totalCatches: [],
+            fishRecords: {}
         };
 
         let gameStatus = 'idle';
         let activeFish = null;
         let waitTimer = 0;
-        let currentRankingTab = 'fish'; // 'fish' or 'total'
+        let currentRankingTab = 'fish';
+
+        let castPower = 0;
+        let isChargingCast = false;
+        let targetFloatX = 0;
+        let targetFloatY = 0;
 
         let minigame = {
             zonePos: 35,
-            zoneSize: 32,
+            zoneSize: 25,
             fishPos: 50,
             fishSpeed: 0,
             progress: 30,
@@ -722,7 +731,6 @@
 
         window.addEventListener('resize', resizeCanvas);
 
-        // --- AUDIO / SOUND SYNTHESIS ---
         let sfxVolume = 0.7;
         let musicVolume = 0.5;
         let audioCtx = null;
@@ -786,7 +794,6 @@
         function updateMusicVolume(val) {
             musicVolume = val / 100;
             document.getElementById('music-vol-val').innerText = val + '%';
-            // YouTube iframe volume via postMessage
             const iframe = document.getElementById('youtube-audio');
             if(iframe && iframe.contentWindow) {
                 iframe.contentWindow.postMessage(JSON.stringify({
@@ -797,7 +804,6 @@
             }
         }
 
-        // --- LOGIN & START SESSION ---
         function startGameSession() {
             const input = document.getElementById('player-name-input').value.trim();
             if(!input) {
@@ -818,7 +824,6 @@
             render();
         }
 
-        // --- GRAFIK & CANVAS RENDERING ---
         let clouds = [];
         let shadowFish = [];
 
@@ -910,7 +915,6 @@
         }
 
         function drawEnvironment(loc) {
-            // Wolken
             ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
             clouds.forEach(p => {
                 ctx.beginPath();
@@ -1013,7 +1017,7 @@
             ctx.fillStyle = 'rgba(255, 255, 255, 0.12)';
             ctx.fillRect(0, height * 0.5, width, 4);
 
-            let rodStartX, rodStartY, floatX, floatY;
+            let rodStartX, rodStartY;
 
             if(loc.hasBoat) {
                 const boatY = height * 0.56 + Math.sin(Date.now() / 800) * 4;
@@ -1037,8 +1041,6 @@
 
                 rodStartX = boatX + 37;
                 rodStartY = boatY - 27;
-                floatX = boatX + 180;
-                floatY = height * 0.62;
             } else {
                 ctx.fillStyle = '#1e140a';
                 ctx.fillRect(0, height * 0.65, width * 0.22, height * 0.35);
@@ -1047,8 +1049,6 @@
 
                 rodStartX = width * 0.132;
                 rodStartY = height * 0.59;
-                floatX = width * 0.55;
-                floatY = height * 0.58;
             }
 
             const rodTipX = rodStartX + 45;
@@ -1065,24 +1065,38 @@
             ctx.lineTo(rodTipX, rodTipY);
             ctx.stroke();
 
-            if(gameStatus !== 'idle') {
-                if(gameStatus === 'hooking') floatY += Math.sin(Date.now() / 50) * 8;
-                else if(gameStatus === 'minigame') floatY += Math.sin(Date.now() / 100) * 4;
+            if(isChargingCast) {
+                castPower += 1.5;
+                if(castPower > 100) castPower = 100;
+
+                ctx.fillStyle = 'rgba(0,0,0,0.6)';
+                ctx.fillRect(width * 0.5 - 60, height * 0.18, 120, 16);
+                ctx.fillStyle = '#38ef7d';
+                ctx.fillRect(width * 0.5 - 58, height * 0.185, (castPower / 100) * 116, 12);
+                ctx.fillStyle = '#fff';
+                ctx.font = '11px Segoe UI';
+                ctx.textAlign = 'center';
+                ctx.fillText(`Wurfstärke: ${Math.round(castPower)} m`, width * 0.5, height * 0.16);
+            }
+
+            if(gameStatus !== 'idle' && gameStatus !== 'charging') {
+                if(gameStatus === 'hooking') targetFloatY += Math.sin(Date.now() / 50) * 8;
+                else if(gameStatus === 'minigame') targetFloatY += Math.sin(Date.now() / 100) * 4;
 
                 ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
                 ctx.moveTo(rodTipX, rodTipY);
-                ctx.quadraticCurveTo((rodTipX + floatX) / 2, floatY - 20, floatX, floatY);
+                ctx.quadraticCurveTo((rodTipX + targetFloatX) / 2, targetFloatY - 20, targetFloatX, targetFloatY);
                 ctx.stroke();
 
                 ctx.fillStyle = '#ff3333';
                 ctx.beginPath();
-                ctx.arc(floatX, floatY, 6, 0, Math.PI * 2);
+                ctx.arc(targetFloatX, targetFloatY, 6, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.fillStyle = '#ffffff';
                 ctx.beginPath();
-                ctx.arc(floatX, floatY + 4, 5, 0, Math.PI * 2);
+                ctx.arc(targetFloatX, targetFloatY + 4, 5, 0, Math.PI * 2);
                 ctx.fill();
             }
 
@@ -1090,7 +1104,7 @@
             ctx.font = '16px Segoe UI';
             ctx.textAlign = 'center';
             if(gameStatus === 'idle') {
-                ctx.fillText('Klicke ins Wasser, um die Angel auszuwerfen!', width * 0.5, height * 0.25);
+                ctx.fillText('Klicke ins Wasser & halte zum Auswerfen (Meter-Wurf) oder nutze den Button!', width * 0.5, height * 0.25);
             } else if(gameStatus === 'waiting') {
                 ctx.fillText('Warten auf Anbiss...', width * 0.5, height * 0.25);
             } else if(gameStatus === 'hooking') {
@@ -1102,64 +1116,79 @@
             requestAnimationFrame(render);
         }
 
-        // --- ANGEL & MINIGAME LOGIC ---
-        function handleCanvasClick() {
+        function triggerCastButton() {
+            if(gameStatus !== 'idle') return;
+            if((state.inventoryBaits[state.currentBait] || 0) <= 0) {
+                alert('Du hast keine Köder dieser Art mehr! Kaufe neue im Shop.');
+                return;
+            }
+            executeCast(width * 0.55, height * 0.6, 50);
+        }
+
+        canvas.addEventListener('mousedown', (e) => {
             initAudio();
-
             if(gameStatus === 'idle') {
-                if((state.inventoryBaits[state.currentBait] || 0) <= 0) {
-                    alert('Du hast keine Köder dieser Art mehr! Kaufe neue im Shop.');
-                    return;
+                if(e.offsetY > height * 0.5) {
+                    isChargingCast = true;
+                    castPower = 10;
                 }
-
-                state.inventoryBaits[state.currentBait]--;
-                updateUI();
-
-                gameStatus = 'waiting';
-                playSound('cast');
-
-                waitTimer = setTimeout(() => {
-                    if(gameStatus === 'waiting') {
-                        gameStatus = 'hooking';
-                        playSound('bite');
-
-                        waitTimer = setTimeout(() => {
-                            if(gameStatus === 'hooking') {
-                                gameStatus = 'idle';
-                                playSound('fail');
-                                alert('Der Fisch ist entwischt!');
-                            }
-                        }, 2000);
-                    }
-                }, 1500 + Math.random() * 3000);
-
             } else if(gameStatus === 'hooking') {
                 clearTimeout(waitTimer);
                 startMinigame();
             }
-        }
+        });
 
-        document.getElementById('canvas-wrapper').addEventListener('mousedown', handleCanvasClick);
+        canvas.addEventListener('mouseup', (e) => {
+            if(isChargingCast && gameStatus === 'idle') {
+                isChargingCast = false;
+                if((state.inventoryBaits[state.currentBait] || 0) <= 0) {
+                    alert('Du hast keine Köder dieser Art mehr! Kaufe neue im Shop.');
+                    return;
+                }
+                executeCast(e.offsetX, Math.max(height * 0.52, e.offsetY), castPower);
+            }
+        });
+
+        function executeCast(x, y, power) {
+            state.inventoryBaits[state.currentBait]--;
+            updateUI();
+
+            targetFloatX = x;
+            targetFloatY = y;
+            gameStatus = 'waiting';
+            playSound('cast');
+
+            waitTimer = setTimeout(() => {
+                if(gameStatus === 'waiting') {
+                    gameStatus = 'hooking';
+                    playSound('bite');
+
+                    waitTimer = setTimeout(() => {
+                        if(gameStatus === 'hooking') {
+                            gameStatus = 'idle';
+                            playSound('fail');
+                            alert('Der Fisch ist entwischt!');
+                        }
+                    }, 2000);
+                }
+            }, 1500 + Math.random() * 3000);
+        }
 
         function startMinigame() {
             gameStatus = 'minigame';
             
             const availableFish = FISH_DATABASE.filter(f => f.location === state.currentLocation);
-            
-            // Seltenheitsfilter & Ruten-Check (Legendäre und schwere Fische seltener)
             let weightedPool = [];
             availableFish.forEach(fish => {
                 let weight = 10;
                 if(fish.rarity === 'uncommon') weight = 6;
                 if(fish.rarity === 'rare') weight = 3;
-                if(fish.rarity === 'legendary') weight = 1; // Legendäre deutlich seltener
-
+                if(fish.rarity === 'legendary') weight = 1;
                 for(let i = 0; i < weight; i++) weightedPool.push(fish);
             });
 
             activeFish = weightedPool[Math.floor(Math.random() * weightedPool.length)];
 
-            // Ruten-Einschränkung / Strenge Hürde
             const rod = RODS.find(r => r.id === state.currentRod);
             if(rod.power < activeFish.minRodPower) {
                 alert(`⚠️ Deine Rute (${rod.name}) ist viel zu schwach für diesen Fisch (${activeFish.name})! Die Schnur reißt sofort.`);
@@ -1168,7 +1197,7 @@
                 return;
             }
 
-            minigame.progress = 35;
+            minigame.progress = 30;
             minigame.tension = 0;
             minigame.fishPos = 50;
             minigame.zonePos = 35;
@@ -1189,34 +1218,34 @@
             const rodPower = rod ? rod.power : 1;
 
             if(minigame.isHolding) {
-                minigame.zonePos -= 2.0 * rodPower;
+                minigame.zonePos -= 2.2 * rodPower;
             } else {
-                minigame.zonePos += 1.5;
+                minigame.zonePos += 1.8;
             }
 
             if(minigame.zonePos < 0) minigame.zonePos = 0;
             if(minigame.zonePos > 100 - minigame.zoneSize) minigame.zonePos = 100 - minigame.zoneSize;
 
-            let unpredictability = 0.5;
-            if(activeFish.rarity === 'uncommon') unpredictability = 0.8;
-            if(activeFish.rarity === 'rare') unpredictability = 1.3;
-            if(activeFish.rarity === 'legendary') unpredictability = 1.9;
+            let unpredictability = 0.6;
+            if(activeFish.rarity === 'uncommon') unpredictability = 1.0;
+            if(activeFish.rarity === 'rare') unpredictability = 1.5;
+            if(activeFish.rarity === 'legendary') unpredictability = 2.2;
 
             minigame.fishSpeed += (Math.random() - 0.5) * unpredictability;
             minigame.fishPos += minigame.fishSpeed;
-            minigame.fishSpeed *= 0.92;
+            minigame.fishSpeed *= 0.90;
 
-            if(minigame.fishPos < 5) { minigame.fishPos = 5; minigame.fishSpeed *= -0.5; }
-            if(minigame.fishPos > 95) { minigame.fishPos = 95; minigame.fishSpeed *= -0.5; }
+            if(minigame.fishPos < 5) { minigame.fishPos = 5; minigame.fishSpeed *= -0.6; }
+            if(minigame.fishPos > 95) { minigame.fishPos = 95; minigame.fishSpeed *= -0.6; }
 
             const inZone = (minigame.fishPos >= minigame.zonePos && minigame.fishPos <= minigame.zonePos + minigame.zoneSize);
 
             if(inZone) {
-                minigame.progress += 0.5 * rodPower;
-                minigame.tension = Math.max(0, minigame.tension - 0.8);
+                minigame.progress += 0.45 * rodPower;
+                minigame.tension = Math.max(0, minigame.tension - 0.7);
             } else {
-                minigame.tension += 0.55;
-                minigame.progress = Math.max(0, minigame.progress - 0.1);
+                minigame.tension += 0.8;
+                minigame.progress = Math.max(0, minigame.progress - 0.18);
             }
 
             document.getElementById('reel-zone').style.top = minigame.zonePos + '%';
@@ -1255,7 +1284,6 @@
                 state.discoveredFish[activeFish.id].maxSize = size;
             }
 
-            // Ranglisten aktualisieren
             updateRankings(activeFish.id, size);
 
             document.getElementById('catch-title').innerText = activeFish.rarity === 'legendary' ? '🌟 LEGENDÄRER FANG!' : 'Toller Fang!';
@@ -1281,7 +1309,7 @@
 
         function addXP(amount) {
             state.xp += amount;
-            const requiredXP = state.level * 80;
+            const requiredXP = state.level * 250;
             if(state.xp >= requiredXP) {
                 state.xp -= requiredXP;
                 state.level++;
@@ -1289,27 +1317,20 @@
             }
         }
 
-        // --- RANGLISTEN SYSTEM LOGIC ---
         function updateRankings(fishId, size) {
-            // 1. Fischgröße Top 5 aktualisieren
             if(!rankingsData.fishRecords[fishId]) {
                 rankingsData.fishRecords[fishId] = [];
             }
             let list = rankingsData.fishRecords[fishId];
-            
-            // Prüfen ob Spieler bereits in der Liste ist
             let existingEntry = list.find(entry => entry.name === playerName);
             if(existingEntry) {
                 if(size > existingEntry.size) existingEntry.size = size;
             } else {
                 list.push({ name: playerName, size: size });
             }
-
-            // Sortieren nach Größe absteigend und Top 5 behalten
             list.sort((a, b) => b.size - a.size);
             if(list.length > 5) list.length = 5;
 
-            // 2. Meiste Fische gefangen Top Liste aktualisieren
             let totalList = rankingsData.totalCatches;
             let totalEntry = totalList.find(e => e.name === playerName);
             if(totalEntry) {
@@ -1328,7 +1349,6 @@
             updateUI();
         }
 
-        // --- UI & TABS ---
         function switchTab(tabId) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -1340,12 +1360,11 @@
         function updateUI() {
             document.getElementById('gold-display').innerText = state.gold;
             document.getElementById('level-display').innerText = state.level;
-            document.getElementById('xp-progress').style.width = ((state.xp / (state.level * 80)) * 100) + '%';
+            document.getElementById('xp-progress').style.width = ((state.xp / (state.level * 250)) * 100) + '%';
 
             const loc = LOCATIONS.find(l => l.id === state.currentLocation);
             document.getElementById('location-display').innerText = loc.name;
 
-            // Ruten Shop
             document.getElementById('rods-shop-list').innerHTML = RODS.map(rod => `
                 <div class="card">
                     <div class="card-info">
@@ -1355,7 +1374,6 @@
                     ${rod.owned ? `<span style="font-size:11px; color:#38ef7d;">Gekauft</span>` : `<button class="btn" onclick="buyRod('${rod.id}')" ${state.gold < rod.cost ? 'disabled' : ''}>${rod.cost} 🪙</button>`}
                 </div>`).join('');
 
-            // Köder Shop
             document.getElementById('baits-shop-list').innerHTML = BAITS.map(bait => `
                 <div class="card">
                     <div class="card-info">
@@ -1365,7 +1383,6 @@
                     <button class="btn" onclick="buyBait('${bait.id}')" ${state.gold < bait.cost ? 'disabled' : ''}>${bait.cost} 🪙</button>
                 </div>`).join('');
 
-            // Ruten Inventar
             document.getElementById('rods-inventory-list').innerHTML = RODS.filter(r => r.owned).map(rod => {
                 const isEq = state.currentRod === rod.id;
                 return `
@@ -1378,7 +1395,6 @@
                 </div>`;
             }).join('');
 
-            // Köder Inventar
             document.getElementById('baits-inventory-list').innerHTML = BAITS.map(bait => {
                 const count = state.inventoryBaits[bait.id] || 0;
                 const isSel = state.currentBait === bait.id;
@@ -1392,7 +1408,6 @@
                 </div>`;
             }).join('');
 
-            // Fangbuch
             document.getElementById('logbook-list').innerHTML = FISH_DATABASE.map(fish => {
                 const disc = state.discoveredFish[fish.id];
                 return `
@@ -1405,7 +1420,6 @@
                 </div>`;
             }).join('');
 
-            // Gewässer
             document.getElementById('locations-list').innerHTML = LOCATIONS.map(location => {
                 const isActive = state.currentLocation === location.id;
                 const canUnlock = state.level >= location.reqLevel && state.gold >= location.cost;
@@ -1419,7 +1433,6 @@
                 </button>`;
             }).join('');
 
-            // Ranglisten Render
             let rankingHTML = '';
             if(currentRankingTab === 'fish') {
                 rankingHTML = FISH_DATABASE.map(fish => {
@@ -1452,7 +1465,6 @@
             document.getElementById('ranking-content-area').innerHTML = rankingHTML;
         }
 
-        // --- SHOP & ACTIONS ---
         function buyRod(rodId) {
             const rod = RODS.find(r => r.id === rodId);
             if(rod && state.gold >= rod.cost && !rod.owned) {
@@ -1506,7 +1518,6 @@
             saveGame();
         }
 
-        // --- SAVE / LOAD GAME ---
         function saveGame() {
             if(!playerName) return;
             const saveData = {
