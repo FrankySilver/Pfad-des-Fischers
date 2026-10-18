@@ -269,7 +269,7 @@
             color: #fff;
         }
 
-        /* Minispiel Overlay (Schwierigkeit 6/10) */
+        /* Minispiel Overlay */
         #minigame-overlay {
             position: absolute;
             top: 50%;
@@ -628,7 +628,7 @@
 
         const FISH_DATABASE = [
             { id: 'rotfeder', name: 'Rotfeder', location: 'lake', rarity: 'common', icon: '🐟', baseSize: 15, baseValue: 4, xp: 5, minRodPower: 1 },
-            { id: 'barsch', name: 'Flussbarsch', location: 'lake', rarity: 'common', icon: '🐠', baseSize: 22, baseValue: 6, xp: 8, minRodPower: 1 },
+            { id: 'barsch', name: 'Flussbarsch', location: 'lake', rarity: 'common', icon: 'gb', baseSize: 22, baseValue: 6, xp: 8, minRodPower: 1 },
             { id: 'karausche', name: 'Karausche', location: 'lake', rarity: 'common', icon: '🐟', baseSize: 20, baseValue: 5, xp: 6, minRodPower: 1 },
             { id: 'schleie', name: 'Schleie', location: 'lake', rarity: 'uncommon', icon: '🐟', baseSize: 35, baseValue: 12, xp: 15, minRodPower: 1 },
             { id: 'brasse', name: 'Brachse', location: 'lake', rarity: 'uncommon', icon: '🐟', baseSize: 40, baseValue: 15, xp: 18, minRodPower: 1 },
@@ -696,12 +696,14 @@
             fishRecords: {}
         };
 
-        let gameStatus = 'idle';
+        let gameStatus = 'idle'; // idle, charging, waiting, hooking, minigame
         let activeFish = null;
         let waitTimer = 0;
         let currentRankingTab = 'fish';
 
+        // Wurf-Anzeige Variablen (Oszillierend)
         let castPower = 0;
+        let castDirection = 1; // 1 = aufwärts, -1 = abwärts
         let isChargingCast = false;
         let targetFloatX = 0;
         let targetFloatY = 0;
@@ -1065,18 +1067,25 @@
             ctx.lineTo(rodTipX, rodTipY);
             ctx.stroke();
 
+            // Oszillierende Wurf-Anzeige (Auf- und Ablaufen)
             if(isChargingCast) {
-                castPower += 1.5;
-                if(castPower > 100) castPower = 100;
+                castPower += 2.0 * castDirection;
+                if(castPower >= 100) {
+                    castPower = 100;
+                    castDirection = -1; // Richtung umkehren -> nach unten
+                } else if(castPower <= 0) {
+                    castPower = 0;
+                    castDirection = 1; // Richtung umkehren -> nach oben
+                }
 
-                ctx.fillStyle = 'rgba(0,0,0,0.6)';
-                ctx.fillRect(width * 0.5 - 60, height * 0.18, 120, 16);
+                ctx.fillStyle = 'rgba(0,0,0,0.7)';
+                ctx.fillRect(width * 0.5 - 70, height * 0.18, 140, 20);
                 ctx.fillStyle = '#38ef7d';
-                ctx.fillRect(width * 0.5 - 58, height * 0.185, (castPower / 100) * 116, 12);
+                ctx.fillRect(width * 0.5 - 67, height * 0.185, (castPower / 100) * 134, 14);
                 ctx.fillStyle = '#fff';
-                ctx.font = '11px Segoe UI';
+                ctx.font = 'bold 12px Segoe UI';
                 ctx.textAlign = 'center';
-                ctx.fillText(`Wurfstärke: ${Math.round(castPower)} m`, width * 0.5, height * 0.16);
+                ctx.fillText(`Wurfstärke: ${Math.round(castPower)} m (Klicke zum Auswerfen!)`, width * 0.5, height * 0.16);
             }
 
             if(gameStatus !== 'idle' && gameStatus !== 'charging') {
@@ -1103,8 +1112,8 @@
             ctx.fillStyle = '#ffffff';
             ctx.font = '16px Segoe UI';
             ctx.textAlign = 'center';
-            if(gameStatus === 'idle') {
-                ctx.fillText('Klicke ins Wasser & halte zum Auswerfen (Meter-Wurf) oder nutze den Button!', width * 0.5, height * 0.25);
+            if(gameStatus === 'idle' && !isChargingCast) {
+                ctx.fillText('Klicke ins Wasser oder nutze den Button, um den Meter-Wurf zu starten!', width * 0.5, height * 0.25);
             } else if(gameStatus === 'waiting') {
                 ctx.fillText('Warten auf Anbiss...', width * 0.5, height * 0.25);
             } else if(gameStatus === 'hooking') {
@@ -1117,35 +1126,46 @@
         }
 
         function triggerCastButton() {
-            if(gameStatus !== 'idle') return;
             if((state.inventoryBaits[state.currentBait] || 0) <= 0) {
                 alert('Du hast keine Köder dieser Art mehr! Kaufe neue im Shop.');
                 return;
             }
-            executeCast(width * 0.55, height * 0.6, 50);
+
+            if(gameStatus === 'idle' && !isChargingCast) {
+                // Startet das Meter-Laufen
+                isChargingCast = true;
+                castPower = 0;
+                castDirection = 1;
+            } else if(isChargingCast) {
+                // Zweiter Klick loggt die Meter ein & wirft automatisch in die Mitte aus
+                isChargingCast = false;
+                executeCast(width * 0.55, height * 0.6, castPower);
+            }
         }
 
-        canvas.addEventListener('mousedown', (e) => {
+        canvas.addEventListener('click', (e) => {
             initAudio();
             if(gameStatus === 'idle') {
-                if(e.offsetY > height * 0.5) {
-                    isChargingCast = true;
-                    castPower = 10;
+                if(!isChargingCast) {
+                    // Erster Klick im Wasserbereich startet die Anzeige
+                    if(e.offsetY > height * 0.5) {
+                        isChargingCast = true;
+                        castPower = 0;
+                        castDirection = 1;
+                    }
+                } else {
+                    // Zweiter Klick im Wasserbereich stellt die Wurfweite fest & wirft exakt dort hin!
+                    if((state.inventoryBaits[state.currentBait] || 0) <= 0) {
+                        alert('Du hast keine Köder dieser Art mehr! Kaufe neue im Shop.');
+                        isChargingCast = false;
+                        return;
+                    }
+                    isChargingCast = false;
+                    executeCast(e.offsetX, Math.max(height * 0.52, e.offsetY), castPower);
                 }
             } else if(gameStatus === 'hooking') {
                 clearTimeout(waitTimer);
                 startMinigame();
-            }
-        });
-
-        canvas.addEventListener('mouseup', (e) => {
-            if(isChargingCast && gameStatus === 'idle') {
-                isChargingCast = false;
-                if((state.inventoryBaits[state.currentBait] || 0) <= 0) {
-                    alert('Du hast keine Köder dieser Art mehr! Kaufe neue im Shop.');
-                    return;
-                }
-                executeCast(e.offsetX, Math.max(height * 0.52, e.offsetY), castPower);
             }
         });
 
