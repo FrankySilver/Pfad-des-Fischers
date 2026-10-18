@@ -36,7 +36,7 @@
             left: 0;
             right: 0;
             height: 60px;
-            background: linear-gradient(to bottom, rgba(13, 19, 29, 0.9), rgba(13, 19, 29, 0));
+            background: linear-gradient(to bottom, rgba(13, 19, 29, 0.8), rgba(13, 19, 29, 0));
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -443,8 +443,8 @@
                 name: 'Idyllischer Waldsee',
                 reqLevel: 1,
                 cost: 0,
-                bgSky: ['#132238', '#1c3b57'],
-                bgWater: ['#10354a', '#061924'],
+                bgSky: ['#87CEEB', '#E0F6FF'],
+                bgWater: ['#2E8B57', '#1E4D2B'],
                 hasBoat: false,
                 unlocked: true
             },
@@ -453,8 +453,8 @@
                 name: 'Reißender Bergfluss',
                 reqLevel: 2,
                 cost: 200,
-                bgSky: ['#1b2838', '#384c66'],
-                bgWater: ['#1a3c54', '#0d2233'],
+                bgSky: ['#7092BE', '#C8D7E6'],
+                bgWater: ['#3A6073', '#16222A'],
                 hasBoat: false,
                 unlocked: false
             },
@@ -463,8 +463,8 @@
                 name: 'Sonnige Küstengewässer',
                 reqLevel: 5,
                 cost: 1200,
-                bgSky: ['#0f2b46', '#265b88'],
-                bgWater: ['#004e89', '#001d3d'],
+                bgSky: ['#4A90E2', '#B2E0F7'],
+                bgWater: ['#0077BE', '#004080'],
                 hasBoat: false,
                 unlocked: false
             },
@@ -473,8 +473,8 @@
                 name: 'Dichter Amazonas-Dschungel',
                 reqLevel: 8,
                 cost: 4500,
-                bgSky: ['#0d231a', '#1e4835'],
-                bgWater: ['#1a3d2f', '#091c13'],
+                bgSky: ['#556B2F', '#A2B964'],
+                bgWater: ['#2F5233', '#112211'],
                 hasBoat: false,
                 unlocked: false
             },
@@ -483,8 +483,8 @@
                 name: 'Offener Ozean / Tiefsee',
                 reqLevel: 12,
                 cost: 12000,
-                bgSky: ['#020b14', '#0f2027'],
-                bgWater: ['#001220', '#000408'],
+                bgSky: ['#FD5E53', '#FFC3A0'], // Sonnenuntergang
+                bgWater: ['#0A2342', '#030F26'],
                 hasBoat: true,
                 unlocked: false
             }
@@ -548,7 +548,7 @@
             { id: 'riffhai', name: 'Grauer Riffhai', location: 'ocean', rarity: 'rare', icon: '🦈', baseSize: 160, baseValue: 480, xp: 420 },
             { id: 'meerjungfrau', name: 'Magische Koralle', location: 'ocean', rarity: 'legendary', icon: '🪸', baseSize: 50, baseValue: 1100, xp: 900 },
 
-            // Dichter Amazonas-Dschungel (9 Arten)
+            // Dichter Amazonas-Dschungel
             { id: 'piranha', name: 'Rotbauch-Piranha', location: 'amazonas', rarity: 'common', icon: '🐟', baseSize: 22, baseValue: 55, xp: 50 },
             { id: 'arowana', name: 'Silber-Arowana', location: 'amazonas', rarity: 'common', icon: '🐠', baseSize: 70, baseValue: 85, xp: 75 },
             { id: 'tucunare', name: 'Pfauenbarsch (Tucunaré)', location: 'amazonas', rarity: 'uncommon', icon: '🐠', baseSize: 60, baseValue: 140, xp: 125 },
@@ -559,7 +559,7 @@
             { id: 'arapaima_giant', name: 'Gigantischer Arapaima', location: 'amazonas', rarity: 'legendary', icon: '🐉', baseSize: 280, baseValue: 1400, xp: 1100 },
             { id: 'boto', name: 'Rosa Flussdelfin (Boto)', location: 'amazonas', rarity: 'legendary', icon: '🐬', baseSize: 210, baseValue: 2200, xp: 1800 },
 
-            // Offener Ozean / Tiefsee (12 Arten)
+            // Offener Ozean / Tiefsee
             { id: 'sardine', name: 'Ozeansardine', location: 'deepocean', rarity: 'common', icon: '🐟', baseSize: 15, baseValue: 50, xp: 45 },
             { id: 'makrele_tiefsee', name: 'Königs-Makrele', location: 'deepocean', rarity: 'common', icon: '🐟', baseSize: 45, baseValue: 85, xp: 75 },
             { id: 'horhecht_deep', name: 'Pfeil-Hornhecht', location: 'deepocean', rarity: 'common', icon: '🐟', baseSize: 85, baseValue: 130, xp: 110 },
@@ -593,12 +593,12 @@
 
         // Minispiel Parameter
         let minigame = {
-            zonePos: 35, // in %
-            zoneSize: 32, // in %
-            fishPos: 50, // in %
+            zonePos: 35,
+            zoneSize: 32,
+            fishPos: 50,
             fishSpeed: 0,
-            progress: 30, // %
-            tension: 0, // %
+            progress: 30,
+            tension: 0,
             isHolding: false
         };
 
@@ -684,13 +684,13 @@
 
         function initParticles() {
             particles = [];
-            for(let i = 0; i < 30; i++) {
+            for(let i = 0; i < 20; i++) {
                 particles.push({
                     x: Math.random() * width,
-                    y: Math.random() * height,
-                    radius: Math.random() * 2 + 1,
-                    alpha: Math.random() * 0.5 + 0.2,
-                    speed: Math.random() * 0.5 + 0.2
+                    y: Math.random() * height * 0.4,
+                    radius: Math.random() * 12 + 8,
+                    alpha: Math.random() * 0.3 + 0.2,
+                    speed: Math.random() * 0.3 + 0.1
                 });
             }
         }
@@ -746,82 +746,156 @@
 
         // Zeichnen der detaillierten Landschafts-Elemente
         function drawEnvironment(loc) {
-            // Bäume für Waldsee
+            // Wolken am Himmel
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.arc(p.x + p.radius * 0.7, p.y - p.radius * 0.2, p.radius * 0.8, 0, Math.PI * 2);
+                ctx.arc(p.x - p.radius * 0.7, p.y - p.radius * 0.1, p.radius * 0.7, 0, Math.PI * 2);
+                ctx.fill();
+                p.x += p.speed;
+                if(p.x > width + 50) p.x = -50;
+            });
+
+            // 1. WALDSEE: Sanfte Wiesen, grüne Hügel & dichte Nadelbäume
             if(loc.id === 'lake') {
-                ctx.fillStyle = '#0a1d13';
-                for(let i = 0; i < width; i += 60) {
+                // Ferne Hügel
+                ctx.fillStyle = '#4D8B55';
+                ctx.beginPath();
+                ctx.ellipse(width * 0.3, height * 0.5, width * 0.4, height * 0.18, 0, 0, Math.PI * 2);
+                ctx.ellipse(width * 0.8, height * 0.5, width * 0.35, height * 0.15, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Nadelwald Silhouette
+                ctx.fillStyle = '#1B4D2E';
+                for(let i = 0; i < width; i += 35) {
                     ctx.beginPath();
-                    ctx.moveTo(i, height * 0.5);
-                    ctx.lineTo(i + 25, height * 0.35);
-                    ctx.lineTo(i + 50, height * 0.5);
+                    ctx.moveTo(i, height * 0.52);
+                    ctx.lineTo(i + 18, height * 0.36);
+                    ctx.lineTo(i + 36, height * 0.52);
                     ctx.fill();
                 }
+
+                // Wiesen-Ufer am Wasser
+                ctx.fillStyle = '#55A64E';
+                ctx.beginPath();
+                ctx.ellipse(width * 0.12, height * 0.52, width * 0.2, 18, 0, 0, Math.PI * 2);
+                ctx.fill();
+
                 // Schilf am Steg
                 ctx.strokeStyle = '#2d5a27';
                 ctx.lineWidth = 3;
                 for(let i = width * 0.18; i < width * 0.28; i += 8) {
                     ctx.beginPath();
                     ctx.moveTo(i, height * 0.65);
-                    ctx.quadraticCurveTo(i + 5, height * 0.58, i + (i % 3 === 0 ? 10 : -5), height * 0.52);
+                    ctx.quadraticCurveTo(i + 5, height * 0.58, i + (i % 3 === 0 ? 10 : -5), height * 0.51);
                     ctx.stroke();
                 }
             }
 
-            // Felsen & Wasserfall für Bergfluss
+            // 2. BERGFLUSS: Felsige Berggipfel, alpine Wiesen & Wasserfall
             if(loc.id === 'river') {
-                ctx.fillStyle = '#1c2833';
+                // Graue Berggipfel
+                ctx.fillStyle = '#52616B';
                 ctx.beginPath();
-                ctx.moveTo(width * 0.7, height * 0.5);
-                ctx.lineTo(width * 0.85, height * 0.25);
-                ctx.lineTo(width, height * 0.5);
+                ctx.moveTo(width * 0.05, height * 0.5);
+                ctx.lineTo(width * 0.25, height * 0.18);
+                ctx.lineTo(width * 0.45, height * 0.5);
+                ctx.moveTo(width * 0.4, height * 0.5);
+                ctx.lineTo(width * 0.7, height * 0.12);
+                ctx.lineTo(width * 0.95, height * 0.5);
+                ctx.fill();
+
+                // Schneekappen
+                ctx.fillStyle = '#EAEAEA';
+                ctx.beginPath();
+                ctx.moveTo(width * 0.7, height * 0.12);
+                ctx.lineTo(width * 0.65, height * 0.22);
+                ctx.lineTo(width * 0.75, height * 0.22);
+                ctx.fill();
+
+                // Alpine Wiesen
+                ctx.fillStyle = '#3F704D';
+                ctx.beginPath();
+                ctx.ellipse(width * 0.5, height * 0.51, width * 0.55, 20, 0, 0, Math.PI * 2);
                 ctx.fill();
 
                 // Wasserfall Gischt
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
-                ctx.fillRect(width * 0.82, height * 0.32, 20, height * 0.18);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+                ctx.fillRect(width * 0.68, height * 0.25, 28, height * 0.26);
             }
 
-            // Palme für Küstengewässer
+            // 3. KÜSTENGEWÄSSER: Sandstrand, Dünengras & schattige Palmen
             if(loc.id === 'ocean') {
-                ctx.fillStyle = '#e0a96d'; // Sand
+                // Sandstrand
+                ctx.fillStyle = '#F4D03F';
                 ctx.beginPath();
-                ctx.ellipse(width * 0.85, height * 0.53, 120, 25, 0, 0, Math.PI * 2);
+                ctx.ellipse(width * 0.85, height * 0.52, width * 0.25, 28, 0, 0, Math.PI * 2);
+                ctx.ellipse(width * 0.15, height * 0.52, width * 0.25, 22, 0, 0, Math.PI * 2);
                 ctx.fill();
 
                 // Palmenstamm
-                ctx.strokeStyle = '#5c4033';
-                ctx.lineWidth = 12;
+                ctx.strokeStyle = '#7E5109';
+                ctx.lineWidth = 14;
                 ctx.beginPath();
                 ctx.moveTo(width * 0.88, height * 0.52);
-                ctx.quadraticCurveTo(width * 0.85, height * 0.35, width * 0.82, height * 0.2);
+                ctx.quadraticCurveTo(width * 0.84, height * 0.35, width * 0.82, height * 0.18);
                 ctx.stroke();
 
                 // Palmenblätter
-                ctx.fillStyle = '#1e5631';
+                ctx.fillStyle = '#1E8449';
                 for(let a = 0; a < Math.PI * 2; a += Math.PI / 3) {
                     ctx.beginPath();
-                    ctx.ellipse(width * 0.82 + Math.cos(a)*30, height * 0.2 + Math.sin(a)*15, 35, 10, a, 0, Math.PI * 2);
+                    ctx.ellipse(width * 0.82 + Math.cos(a)*35, height * 0.18 + Math.sin(a)*18, 40, 12, a, 0, Math.PI * 2);
                     ctx.fill();
                 }
             }
 
-            // Dichter Tropenwald & Lianen für den Amazonas
+            // 4. AMAZONAS: Üppiger Regenwald, Tropensträucher & Dschungeldach
             if(loc.id === 'amazonas') {
-                ctx.fillStyle = '#061a10';
-                for(let i = -20; i < width + 40; i += 45) {
+                // Dichtes Dschungeldach
+                ctx.fillStyle = '#145A32';
+                for(let i = -20; i < width + 60; i += 50) {
                     ctx.beginPath();
-                    ctx.arc(i, height * 0.4, 45, 0, Math.PI * 2);
+                    ctx.arc(i, height * 0.38, 55, 0, Math.PI * 2);
                     ctx.fill();
                 }
-                // Lianen von oben
-                ctx.strokeStyle = '#1e4835';
+                ctx.fillStyle = '#1E8449';
+                for(let i = 10; i < width; i += 60) {
+                    ctx.beginPath();
+                    ctx.arc(i, height * 0.42, 45, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                // Schlammiges Dschungelufer
+                ctx.fillStyle = '#196F3D';
+                ctx.beginPath();
+                ctx.ellipse(width * 0.5, height * 0.51, width * 0.55, 20, 0, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Lianen
+                ctx.strokeStyle = '#0B5345';
                 ctx.lineWidth = 4;
-                for(let i = 50; i < width; i += 120) {
+                for(let i = 60; i < width; i += 140) {
                     ctx.beginPath();
                     ctx.moveTo(i, 0);
-                    ctx.quadraticCurveTo(i + 15, height * 0.2, i - 10, height * 0.35);
+                    ctx.quadraticCurveTo(i + 20, height * 0.22, i - 10, height * 0.38);
                     ctx.stroke();
                 }
+            }
+
+            // 5. OFFENER OZEAN: Sonnenuntergang & ferne Horizonte
+            if(loc.id === 'deepocean') {
+                // Untergehende Sonne
+                ctx.fillStyle = '#FFF5C0';
+                ctx.beginPath();
+                ctx.arc(width * 0.5, height * 0.48, 40, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Abendrot Horizonterhellung
+                ctx.fillStyle = 'rgba(255, 154, 60, 0.3)';
+                ctx.fillRect(0, height * 0.42, width, height * 0.08);
             }
         }
 
@@ -830,7 +904,7 @@
 
             const loc = LOCATIONS.find(l => l.id === state.currentLocation);
 
-            // Himmel
+            // Himmel Gradient
             const skyGrad = ctx.createLinearGradient(0, 0, 0, height * 0.5);
             skyGrad.addColorStop(0, loc.bgSky[0]);
             skyGrad.addColorStop(1, loc.bgSky[1]);
@@ -840,28 +914,16 @@
             // Umwelt-Details zeichnen
             drawEnvironment(loc);
 
-            // Wasser
+            // Wasser Gradient
             const waterGrad = ctx.createLinearGradient(0, height * 0.5, 0, height);
             waterGrad.addColorStop(0, loc.bgWater[0]);
             waterGrad.addColorStop(1, loc.bgWater[1]);
             ctx.fillStyle = waterGrad;
             ctx.fillRect(0, height * 0.5, width, height * 0.5);
 
-            // Horizont-Wellen / Glanz
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+            // Horizont-Wellen / Lichtreflexion
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
             ctx.fillRect(0, height * 0.5, width, 4);
-
-            // Partikel (Gischt / Sternenlicht)
-            ctx.fillStyle = '#fff';
-            particles.forEach(p => {
-                ctx.globalAlpha = p.alpha;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fill();
-                p.y -= p.speed;
-                if(p.y < 0) p.y = height;
-            });
-            ctx.globalAlpha = 1.0;
 
             let rodStartX, rodStartY, floatX, floatY;
 
@@ -884,9 +946,9 @@
                 ctx.fillStyle = '#2d1b0a';
                 ctx.fillRect(boatX - 35, boatY - 25, 40, 25);
                 ctx.fillStyle = '#ffd700';
-                ctx.fillRect(boatX - 25, boatY - 18, 12, 10); // Fenster
+                ctx.fillRect(boatX - 25, boatY - 18, 12, 10);
 
-                // Angler-Figur auf dem Boot zeichnen
+                // Angler-Figur auf dem Boot
                 drawFisherman(boatX + 25, boatY - 25, true);
 
                 rodStartX = boatX + 37;
@@ -902,7 +964,7 @@
                     ctx.fillRect(0, height * 0.65 + i, width * 0.22, 14);
                 }
 
-                // Angler-Figur auf dem Steg zeichnen
+                // Angler-Figur auf dem Steg
                 drawFisherman(width * 0.12, height * 0.61, false);
 
                 rodStartX = width * 0.132;
@@ -935,8 +997,8 @@
                     floatY += Math.sin(Date.now() / 100) * 4;
                 }
 
-                // Schnur von Ruten-Spitze zum Schwimmer
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.7)';
+                // Schnur
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
                 ctx.moveTo(rodTipX, rodTipY);
@@ -954,7 +1016,7 @@
                 ctx.fill();
 
                 // Wellenringe beim Auswerfen/Anbeißen
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
                 ctx.beginPath();
                 ctx.ellipse(floatX, floatY + 6, 12 + Math.sin(Date.now() / 200) * 4, 4, 0, 0, Math.PI * 2);
                 ctx.stroke();
@@ -994,7 +1056,7 @@
                 gameStatus = 'waiting';
                 playSound('cast');
 
-                // Anbiss-Timer (2-5 Sekunden)
+                // Anbiss-Timer
                 waitTimer = setTimeout(() => {
                     if(gameStatus === 'waiting') {
                         gameStatus = 'hooking';
@@ -1023,11 +1085,11 @@
         function startMinigame() {
             gameStatus = 'minigame';
             
-            // Zufälligen Fisch basierend auf Gewässer & Köder wählen
+            // Zufälligen Fisch wählen
             const availableFish = FISH_DATABASE.filter(f => f.location === state.currentLocation);
             activeFish = availableFish[Math.floor(Math.random() * availableFish.length)];
 
-            // Reset Minispiel Variablen
+            // Reset Minispiel
             minigame.progress = 35;
             minigame.tension = 0;
             minigame.fishPos = 50;
@@ -1037,7 +1099,7 @@
             document.getElementById('minigame-overlay').style.display = 'flex';
         }
 
-        // Steuerung für Minispiel (Gedrückt halten)
+        // Steuerung für Minispiel
         window.addEventListener('mousedown', () => { if(gameStatus === 'minigame') minigame.isHolding = true; });
         window.addEventListener('mouseup', () => { minigame.isHolding = false; });
         window.addEventListener('touchstart', () => { if(gameStatus === 'minigame') minigame.isHolding = true; });
@@ -1049,18 +1111,15 @@
             const rod = RODS.find(r => r.id === state.currentRod);
             const rodPower = rod ? rod.power : 1;
 
-            // Ziel-Zone bewegen
             if(minigame.isHolding) {
                 minigame.zonePos -= 2.0 * rodPower;
             } else {
                 minigame.zonePos += 1.5;
             }
 
-            // Grenzen für Zielzone
             if(minigame.zonePos < 0) minigame.zonePos = 0;
             if(minigame.zonePos > 100 - minigame.zoneSize) minigame.zonePos = 100 - minigame.zoneSize;
 
-            // Fisch Bewegung (Unberechenbarkeit basierend auf Seltenheit)
             let unpredictability = 0.4;
             if(activeFish.rarity === 'uncommon') unpredictability = 0.7;
             if(activeFish.rarity === 'rare') unpredictability = 1.1;
@@ -1068,13 +1127,11 @@
 
             minigame.fishSpeed += (Math.random() - 0.5) * unpredictability;
             minigame.fishPos += minigame.fishSpeed;
-            minigame.fishSpeed *= 0.92; // Dämpfung
+            minigame.fishSpeed *= 0.92;
 
-            // Grenzen für Fisch
             if(minigame.fishPos < 5) { minigame.fishPos = 5; minigame.fishSpeed *= -0.5; }
             if(minigame.fishPos > 95) { minigame.fishPos = 95; minigame.fishSpeed *= -0.5; }
 
-            // Prüfen ob Fisch in der Zone ist
             const inZone = (minigame.fishPos >= minigame.zonePos && minigame.fishPos <= minigame.zonePos + minigame.zoneSize);
 
             if(inZone) {
@@ -1085,7 +1142,6 @@
                 minigame.progress = Math.max(0, minigame.progress - 0.12);
             }
 
-            // DOM UI Updates im Minispiel
             document.getElementById('reel-zone').style.top = minigame.zonePos + '%';
             document.getElementById('reel-zone').style.height = minigame.zoneSize + '%';
             document.getElementById('reel-fish').style.top = minigame.fishPos + '%';
@@ -1093,7 +1149,6 @@
             document.getElementById('catch-progress').style.width = Math.min(100, minigame.progress) + '%';
             document.getElementById('tension-progress').style.width = Math.min(100, minigame.tension) + '%';
 
-            // Gewinn / Verlust Abfrage
             if(minigame.progress >= 100) {
                 winFish();
             } else if(minigame.tension >= 100) {
@@ -1101,22 +1156,19 @@
             }
         }
 
-        setInterval(updateMinigame, 1000 / 60); // 60 FPS Loop
+        setInterval(updateMinigame, 1000 / 60);
 
         function winFish() {
             gameStatus = 'idle';
             document.getElementById('minigame-overlay').style.display = 'none';
             playSound('catch');
 
-            // Größe-Varianz (+/- 20%)
             const size = Math.round(activeFish.baseSize * (0.8 + Math.random() * 0.4));
             const value = Math.round(activeFish.baseValue * (size / activeFish.baseSize));
 
-            // Belohnung gutschreiben
             state.gold += value;
             addXP(activeFish.xp);
 
-            // Fangbuch Eintrag
             if(!state.discoveredFish[activeFish.id]) {
                 state.discoveredFish[activeFish.id] = { count: 0, maxSize: 0 };
             }
@@ -1125,7 +1177,6 @@
                 state.discoveredFish[activeFish.id].maxSize = size;
             }
 
-            // Modal anzeigen
             document.getElementById('catch-title').innerText = activeFish.rarity === 'legendary' ? '🌟 LEGENDÄRER FANG!' : 'Toller Fang!';
             document.getElementById('catch-icon').innerText = activeFish.icon;
             document.getElementById('catch-name').innerText = activeFish.name;
@@ -1167,7 +1218,6 @@
         }
 
         function updateUI() {
-            // Header stats
             document.getElementById('gold-display').innerText = state.gold;
             document.getElementById('level-display').innerText = state.level;
             document.getElementById('xp-progress').style.width = ((state.xp / (state.level * 80)) * 100) + '%';
